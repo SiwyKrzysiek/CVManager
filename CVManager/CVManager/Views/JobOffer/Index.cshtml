@@ -1,7 +1,15 @@
-﻿@{
-    ViewData["Title"] = "Index";
+﻿@model List<JobOffer>
+
+@{
+    ViewData["Title"] = "Job Offers";
+
 }
 
-<h2>Index</h2>
+<h2>Open Jobs</h2>
 
-<p>Hello from our View Template!</p>
+<ul>
+    @foreach(var offer in Model)
+    {
+        <li>@offer.JobTitle</li>
+    }
+</ul>
