@@ -25,5 +25,10 @@ namespace CVManager.Controllers
         {
             return View(_jobOffers);
         }
+
+        public IActionResult Details(int id)
+        {
+            return View(_jobOffers[id]);
+        }
     }
 }
