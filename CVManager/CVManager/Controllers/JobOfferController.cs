@@ -28,7 +28,7 @@ namespace CVManager.Controllers
 
         public IActionResult Details(int id)
         {
-            return View(_jobOffers[id]);
+            return View(_jobOffers.FirstOrDefault((offer) => offer.Id == id));
         }
     }
 }
