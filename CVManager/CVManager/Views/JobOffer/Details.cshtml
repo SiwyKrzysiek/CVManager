@@ -1,0 +1,19 @@
+﻿@model JobOffer
+
+@{
+    ViewData["Title"] = Model.JobTitle;
+}
+
+<h2>Job details</h2>
+<p><strong>Id:</strong> @Model.Id</p>
+<p><strong>Job Title:</strong> @Model.JobTitle</p>
+
+@if (Model.MonthlySalayr != decimal.Zero)
+{<p><strong>Mothly salary:</strong> @Model.MonthlySalayr zł</p>}
+
+@if (!string.IsNullOrWhiteSpace(Model.Location))
+{<p><strong>Location:</strong> @Model.Location</p>}
+
+@if (!string.IsNullOrWhiteSpace(Model.Requirements))
+{<p><strong>Requirments:</strong> @Model.Requirements</p>}
+
