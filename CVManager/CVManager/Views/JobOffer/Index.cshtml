@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Job Offers";
-
 }
 
 <h2>Open Jobs</h2>
@@ -10,6 +9,6 @@
 <ul>
     @foreach(var offer in Model)
     {
-        <li>@offer.JobTitle</li>
+        <li>@Html.ActionLink(offer.JobTitle, "Details", "JobOffer", new { id = offer.Id })</li>
     }
 </ul>
