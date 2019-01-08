@@ -92,6 +92,15 @@ namespace CVManager.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<ActionResult> Create()
+        {
+            var model = new JobOfferCreateView
+            {
+                Companies = _companies //Load available companies list
+            };
+            return View(model);
+        }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
