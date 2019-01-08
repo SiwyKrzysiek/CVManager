@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using CVManager.Models;
 
 namespace CVManager.Controllers
 {
+    [Route("[controller]/[action]")]
     public class JobOfferController : Controller
     {
         private static readonly List<Company> _companies = new List<Company>()
@@ -55,6 +57,17 @@ namespace CVManager.Controllers
                 ValidUntil = DateTime.Now.AddDays(10)
             }
         };
+
+        public IActionResult Edit(int? id)
+        {
+            //if (id == null)
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var offer = _jobOffers.Find(o => o.Id == id);
+            //if (offer == null)
+            //    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
+            return View(offer);
+        }
 
         // GET: /<controller>/
         public IActionResult Index()

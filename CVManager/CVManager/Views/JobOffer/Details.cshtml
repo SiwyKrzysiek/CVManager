@@ -8,13 +8,13 @@
 <p><strong>Id:</strong> @Model.Id</p>
 <p><strong>Job Title:</strong> @Model.JobTitle</p>
 
-@if (Model.MonthlySalary != decimal.Zero)
-{<p><strong>Mothly salary:</strong> @Model.MonthlySalary zł</p>}
+@*@if (Model.MonthlySalary != decimal.Zero)
+{<p><strong>Mothly salary:</strong> @Model.MonthlySalary zł</p>}*@
 
 @if (!string.IsNullOrWhiteSpace(Model.Location))
 {<p><strong>Location:</strong> @Model.Location</p>}
 
-@if (!string.IsNullOrWhiteSpace(Model.Requirements))
-{<p><strong>Requirments:</strong> @Model.Requirements</p>}
+@*@if (!string.IsNullOrWhiteSpace(Model.Requirements))
+{<p><strong>Requirments:</strong> @Model.Requirements</p>}*@
 
  <button> @Html.ActionLink("Return to full list", "Index") </button>
