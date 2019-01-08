@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CVManager.Models;
 
@@ -67,6 +68,18 @@ namespace CVManager.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
             return View(offer);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(JobOffer model)
+        {
+            if (!ModelState.IsValid)
+                return View();
+            var offer = _jobOffers.Find(o => o.Id == model.Id);
+            offer.JobTitle = model.JobTitle;
+            //ToDo: Maybe assign other values as well
+            return RedirectToAction("Details", new {id = model.Id});
         }
 
         // GET: /<controller>/
