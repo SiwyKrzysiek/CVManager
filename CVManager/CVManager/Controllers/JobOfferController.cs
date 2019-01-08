@@ -60,11 +60,11 @@ namespace CVManager.Controllers
 
         public IActionResult Edit(int? id)
         {
-            //if (id == null)
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             var offer = _jobOffers.Find(o => o.Id == id);
-            //if (offer == null)
-            //    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            if (offer == null)
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
             return View(offer);
         }
