@@ -101,6 +101,36 @@ namespace CVManager.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<ActionResult> Create(JobOfferCreateView model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Companies = _companies;
+                return View(model);
+            }
+
+            var id = _jobOffers.Max(j => j.Id) + 1; //Generate new id
+
+            _jobOffers.Add(new JobOffer
+                {
+                    Id = id,
+                    CompanyId = model.CompanyId,
+                    Company = _companies.FirstOrDefault(c => c.Id == model.CompanyId),
+                    Description = model.Description,
+                    JobTitle = model.JobTitle,
+                    Location = model.Location,
+                    SalaryFrom = model.SalaryFrom,
+                    SalaryTo = model.SalaryTo,
+                    ValidUntil = model.ValidUntil,
+                    Created = DateTime.Now
+                }
+            );
+
+            return RedirectToAction("Index");
+        }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
