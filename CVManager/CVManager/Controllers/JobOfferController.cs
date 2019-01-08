@@ -82,6 +82,16 @@ namespace CVManager.Controllers
             return RedirectToAction("Details", new {id = model.Id});
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            _jobOffers.RemoveAll(o => o.Id == id);
+
+            return RedirectToAction("Index");
+        }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
