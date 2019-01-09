@@ -22,5 +22,6 @@ namespace CVManager.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyy-MM-dd}")]
         [Display(Name = "Date of Birth")]
         public DateTime? DateOfBirth { get; set; }
+        public string Description { get; set; }
     }
 }
