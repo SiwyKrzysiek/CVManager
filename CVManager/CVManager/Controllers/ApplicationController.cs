@@ -20,7 +20,9 @@ namespace CVManager.Controllers
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-            return View(offer);
+            var application = new JobApplication() {OfferId = offer.Id};
+
+            return View(application);
         }
 
         //[HttpPost]
