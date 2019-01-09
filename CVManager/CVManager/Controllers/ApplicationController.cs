@@ -11,6 +11,7 @@ namespace CVManager.Controllers
     [Route("[controller]/[action]")]
     public class ApplicationController : Controller
     {
+        [HttpGet]
         public IActionResult Apply(int? id)
         {
             if (id == null)
@@ -25,11 +26,12 @@ namespace CVManager.Controllers
             return View(application);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Apply(JobApplication model)
-        //{
-            
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Apply(JobApplication model)
+        {
+            //ToDo: Add application to job offer
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
