@@ -59,6 +59,21 @@ namespace CVManager.Controllers
             }
         };
 
+        [HttpGet]
+        public IActionResult Index([FromQuery(Name = "search")] string searchString)
+        {
+            if (String.IsNullOrEmpty(searchString))
+                return View(_jobOffers); //List all
+
+            var searchResults = _jobOffers.FindAll(o => o.JobTitle.Contains(searchString));
+            return View(searchResults);
+        }
+
+        public IActionResult Details(int id)
+        {
+            return View(_jobOffers.FirstOrDefault((offer) => offer.Id == id));
+        }
+
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -129,17 +144,6 @@ namespace CVManager.Controllers
             );
 
             return RedirectToAction("Index");
-        }
-
-        // GET: /<controller>/
-        public IActionResult Index()
-        {
-            return View(_jobOffers);
-        }
-
-        public IActionResult Details(int id)
-        {
-            return View(_jobOffers.FirstOrDefault((offer) => offer.Id == id));
         }
     }
 }
