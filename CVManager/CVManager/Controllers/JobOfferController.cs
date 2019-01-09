@@ -26,7 +26,7 @@ namespace CVManager.Controllers
             {
                 Id = 1,
                 JobTitle = "C# Programmer",
-                Company = _companies.FirstOrDefault(c => c.Name == "Precica"),
+                Company = _companies.FirstOrDefault(c => c.Name == "Predica"),
                 Created = DateTime.Now.AddDays(-5),
                 SalaryFrom = 3500,
                 SalaryTo = 6800,
