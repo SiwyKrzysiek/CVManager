@@ -3,5 +3,17 @@
     ViewData["Title"] = $"Apply for {Model.JobTitle}";
 }
 
-<h2>Apply for: <span class="text-info">@Model.JobTitle</span></h2>
+<div class="row page-box">
+    <div class="col-sm-12">
+        <h2>Apply for: <span class="text-info">@Model.JobTitle</span></h2>
 
+        @using (Html.BeginForm("Apply"))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Apply</button>
+            </div>
+        }
+    </div>
+</div>
