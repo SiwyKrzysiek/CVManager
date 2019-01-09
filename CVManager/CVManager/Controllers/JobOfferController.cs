@@ -93,7 +93,8 @@ namespace CVManager.Controllers
                 return View();
             var offer = _jobOffers.Find(o => o.Id == model.Id);
             offer.JobTitle = model.JobTitle;
-            //ToDo: Maybe assign other values as well
+            offer.Description = model.Description;
+
             return RedirectToAction("Details", new {id = model.Id});
         }
 
