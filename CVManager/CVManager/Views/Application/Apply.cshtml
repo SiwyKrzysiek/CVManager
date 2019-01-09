@@ -1,4 +1,4 @@
-﻿@model JobOffer
+﻿@model JobApplicationCrateView
 @{
     ViewData["Title"] = $"Apply for {Model.JobTitle}";
 }
@@ -10,6 +10,10 @@
         @using (Html.BeginForm("Apply"))
         {
             @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.LabelFor()
+            </div>
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Apply</button>
