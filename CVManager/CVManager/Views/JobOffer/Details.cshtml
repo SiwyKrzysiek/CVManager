@@ -4,17 +4,55 @@
     ViewData["Title"] = Model.JobTitle;
 }
 
-<h2>Job details</h2>
-<p><strong>Id:</strong> @Model.Id</p>
-<p><strong>Job Title:</strong> @Model.JobTitle</p>
+<div class="row page-box">
+    <h1>@Model.JobTitle</h1>
+    <div class="col-sm-8"> @* Left section *@
+        <div class="offer-description" id="previewMarkdown">
+            @Model.Description
+        </div>
+    </div>
+    
+    <div class="col-sm-4"> @* Right section *@
+        <div class="offer-details">
+            <div>
+                <label>Company:</label>
+                <span>@Model.Company.Name</span>
+            </div>
+            <div>
+                <label>Location:</label>
+                <span>@Model.Location</span>
+            </div>
+            @if (Model.SalaryFrom.HasValue){
+                <div>
+                    <label>Salary from:</label>
+                    <span>@Model.SalaryFrom  (PLN)</span>
+                </div>
+            }
+            @if (Model.SalaryTo.HasValue){
+                <div>
+                    <label>Salary to:</label>
+                    <span>@Model.SalaryTo</span>
+                </div>
+            }
+            <div>
+                <label>Created:</label>
+                <span>@Model.Created</span>
+            </div>
+            @if (Model.ValidUntil.HasValue){
+                <div>
+                    <label>Valid:</label>
+                    <span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>
+                </div>
+            }
 
-@*@if (Model.MonthlySalary != decimal.Zero)
-{<p><strong>Mothly salary:</strong> @Model.MonthlySalary zł</p>}*@
-
-@if (!string.IsNullOrWhiteSpace(Model.Location))
-{<p><strong>Location:</strong> @Model.Location</p>}
-
-@*@if (!string.IsNullOrWhiteSpace(Model.Requirements))
-{<p><strong>Requirments:</strong> @Model.Requirements</p>}*@
-
- <button> @Html.ActionLink("Return to full list", "Index") </button>
+            <div>
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+                @using (Html.BeginForm("Delete", "JobOffer", new { Model.Id }, FormMethod.Post, null, new {style = "display:inline;" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
