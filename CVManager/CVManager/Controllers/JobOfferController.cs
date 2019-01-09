@@ -11,7 +11,7 @@ namespace CVManager.Controllers
     [Route("[controller]/[action]")]
     public class JobOfferController : Controller
     {
-        private static readonly List<Company> _companies = new List<Company>()
+        public static readonly List<Company> _companies = new List<Company>()
         {
             new Company() {Id = 1, Name = "Predica"},
             new Company() {Id = 2, Name = "Microsoft"},
@@ -20,7 +20,7 @@ namespace CVManager.Controllers
             new Company() {Id = 5, Name = "Sweet Home"}
         };
 
-        private static readonly List<JobOffer> _jobOffers = new List<JobOffer>
+        public static readonly List<JobOffer> _jobOffers = new List<JobOffer>
         {
             new JobOffer
             {
