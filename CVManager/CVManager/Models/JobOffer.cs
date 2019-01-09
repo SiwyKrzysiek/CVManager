@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -25,5 +26,6 @@ namespace CVManager.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyy-MM-dd}")]
         [Display(Name = "Valid until")]
         public DateTime? ValidUntil { get; set; }
+        public List<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
     }
 }
