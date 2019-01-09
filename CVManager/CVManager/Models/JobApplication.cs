@@ -11,8 +11,10 @@ namespace CVManager.Models
         public int Id { get; set; }
         public int OfferId { get; set; }
         [Display(Name = "First Name")]
+        [Required]
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
+        [Required]
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
