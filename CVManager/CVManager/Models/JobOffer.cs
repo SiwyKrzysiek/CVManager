@@ -19,7 +19,7 @@ namespace CVManager.Models
         public DateTime Created { get; set; }
         public string Location { get; set; }
         [Required]
-        [MinLength(50)]
+        [MinLength(50, ErrorMessage = "Description must be at lest 50 characters")]
         public string Description { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyy-MM-dd}")]
