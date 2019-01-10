@@ -42,13 +42,19 @@ namespace CVManager.Migrations
 
                     b.Property<string>("CvUrl");
 
+                    b.Property<DateTime?>("DateOfBirth");
+
+                    b.Property<string>("Description");
+
                     b.Property<string>("EmailAddress");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
                     b.Property<int?>("JobOfferId");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<int>("OfferId");
 
@@ -89,7 +95,7 @@ namespace CVManager.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("JobOfers");
+                    b.ToTable("JobOffers");
                 });
 
             modelBuilder.Entity("CVManager.Models.JobApplication", b =>

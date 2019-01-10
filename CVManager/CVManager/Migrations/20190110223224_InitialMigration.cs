@@ -22,7 +22,7 @@ namespace CVManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobOfers",
+                name: "JobOffers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -38,9 +38,9 @@ namespace CVManager.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobOfers", x => x.Id);
+                    table.PrimaryKey("PK_JobOffers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_JobOfers_Companies_CompanyId",
+                        name: "FK_JobOffers_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
@@ -54,21 +54,23 @@ namespace CVManager.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     OfferId = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
                     PhoneNumber = table.Column<string>(nullable: true),
                     EmailAddress = table.Column<string>(nullable: true),
                     ContactAgreement = table.Column<bool>(nullable: false),
                     CvUrl = table.Column<string>(nullable: true),
+                    DateOfBirth = table.Column<DateTime>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
                     JobOfferId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_JobApplications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_JobApplications_JobOfers_JobOfferId",
+                        name: "FK_JobApplications_JobOffers_JobOfferId",
                         column: x => x.JobOfferId,
-                        principalTable: "JobOfers",
+                        principalTable: "JobOffers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -79,8 +81,8 @@ namespace CVManager.Migrations
                 column: "JobOfferId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobOfers_CompanyId",
-                table: "JobOfers",
+                name: "IX_JobOffers_CompanyId",
+                table: "JobOffers",
                 column: "CompanyId");
         }
 
@@ -90,7 +92,7 @@ namespace CVManager.Migrations
                 name: "JobApplications");
 
             migrationBuilder.DropTable(
-                name: "JobOfers");
+                name: "JobOffers");
 
             migrationBuilder.DropTable(
                 name: "Companies");
