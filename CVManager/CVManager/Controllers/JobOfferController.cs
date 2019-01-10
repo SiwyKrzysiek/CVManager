@@ -124,9 +124,14 @@ namespace CVManager.Controllers
             if (!ModelState.IsValid)
                 return View();
             //ToDO: Use DB
-            var offer = _jobOffers.Find(o => o.Id == model.Id);
+            var offer = LoadJobOffers().FirstOrDefault(o => o.Id == model.Id);
+            if (offer == null)
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
             offer.JobTitle = model.JobTitle;
             offer.Description = model.Description;
+
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("Details", new {id = model.Id});
         }
