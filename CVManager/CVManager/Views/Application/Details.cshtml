@@ -1,0 +1,10 @@
+﻿@model JobApplication
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="row page-box">
+    <h2>Application details</h2>
+
+    @Html.ActionLink("Back to offer", "Details", "JobOffer", new { id = Model.OfferId}, new { @class = "btn btn-primary" })
+</div>
