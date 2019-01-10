@@ -127,7 +127,7 @@ namespace CVManager.Controllers
                 return View(model);
             }
 
-            var id = _jobOffers.Max(j => j.Id) + 1; //Generate new id
+            var id = (_jobOffers.Count == 0) ? 1 : _jobOffers.Max(j => j.Id) + 1; //Generate new id
 
             _jobOffers.Add(new JobOffer
                 {
