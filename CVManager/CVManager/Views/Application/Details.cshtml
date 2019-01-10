@@ -5,6 +5,44 @@
 
 <div class="row page-box">
     <h2>Application details</h2>
+    <div>
+        <label>First Name:</label>
+        <span>@Model.FirstName</span>
+    </div>
+    <div>
+        <label>Last Name:</label>
+        <span>@Model.LastName</span>
+    </div>
+    @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+    {
+        <div>
+            <label>Phone number:</label>
+            <span>@Model.PhoneNumber</span>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(Model.EmailAddress))
+    {
+        <div>
+            <label>Email address:</label>
+            <span>@Model.EmailAddress</span>
+        </div>
+    }
+    @if (Model.DateOfBirth.HasValue)
+    {
+        <div>
+            <label>Date of birth</label>
+            <span>@Model.DateOfBirth</span>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <div>
+            <label>Description:</label>
+            <div>
+                @Model.Description
+            </div>
+        </div>
+    }
 
-    @Html.ActionLink("Back to offer", "Details", "JobOffer", new { id = Model.OfferId}, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Back to offer", "Details", "JobOffer", new { id = Model.OfferId }, new { @class = "btn btn-primary", style = "margin-top: 15px"})
 </div>
