@@ -71,7 +71,14 @@ namespace CVManager.Controllers
 
         public IActionResult Details(int id)
         {
-            return View(_jobOffers.FirstOrDefault((offer) => offer.Id == id));
+            var offer = _jobOffers.FirstOrDefault((o) => o.Id == id);
+            if (offer == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var applications = ApplicationController._applications.FindAll(a => a.OfferId == offer.Id);
+            offer.JobApplications = applications;
+
+            return View(offer);
         }
 
         public IActionResult Edit(int? id)
