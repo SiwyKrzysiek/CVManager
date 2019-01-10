@@ -70,10 +70,12 @@ namespace CVManager.Controllers
         [HttpGet]
         public IActionResult Index([FromQuery(Name = "search")] string searchString)
         {
-            if (String.IsNullOrEmpty(searchString))
-                return View(_jobOffers); //List all
+            var jobOffers = _jobOffers;
 
-            var searchResults = _jobOffers.FindAll(o => o.JobTitle.Contains(searchString));
+            if (String.IsNullOrEmpty(searchString))
+                return View(jobOffers); //List all
+
+            var searchResults = jobOffers.FindAll(o => o.JobTitle.Contains(searchString));
             return View(searchResults);
         }
 
@@ -159,9 +161,9 @@ namespace CVManager.Controllers
                 Created = DateTime.Now
             };
 
-            //_jobOffers.Add(newOffer);
-            _context.JobOfers.Add(newOffer);
-            await _context.SaveChangesAsync();
+            _jobOffers.Add(newOffer);
+            //_context.JobOfers.Add(newOffer);
+            //await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
