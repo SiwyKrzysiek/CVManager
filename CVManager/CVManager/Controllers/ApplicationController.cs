@@ -14,6 +14,19 @@ namespace CVManager.Controllers
         public static readonly List<JobApplication> _applications = new List<JobApplication>();
 
         [HttpGet]
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var application = _applications.FirstOrDefault(a => a.Id == id);
+            if (application == null)
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
+            return View(application);
+        }
+
+        [HttpGet]
         public IActionResult Apply(int? id)
         {
             if (id == null)
