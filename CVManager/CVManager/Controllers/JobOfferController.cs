@@ -60,6 +60,18 @@ namespace CVManager.Controllers
             }
         };
 
+        private List<JobOffer> loadJobOffers()
+        {
+            var jobOffers = _context.JobOfers.ToList();
+            var companies = _context.Companies.ToList();
+            foreach (var offer in jobOffers)
+            {
+                offer.Company = companies.FirstOrDefault(c => c.Id == offer.CompanyId);
+            }
+
+            return jobOffers;
+        }
+
         private readonly DataContext _context;
 
         public JobOfferController(DataContext context)
@@ -70,13 +82,7 @@ namespace CVManager.Controllers
         [HttpGet]
         public IActionResult Index([FromQuery(Name = "search")] string searchString)
         {
-            var jobOffers = _context.JobOfers.ToList();
-            var companies = _context.Companies.ToList();
-            foreach (var offer in jobOffers)
-            {
-                offer.Company = companies.FirstOrDefault(c => c.Id == offer.CompanyId);
-            }
-
+            var jobOffers = loadJobOffers();
 
             if (String.IsNullOrEmpty(searchString))
                 return View(jobOffers); //List all
@@ -87,10 +93,12 @@ namespace CVManager.Controllers
 
         public IActionResult Details(int id)
         {
-            var offer = _jobOffers.FirstOrDefault((o) => o.Id == id);
+            var offer = _context.JobOfers.ToList().FirstOrDefault((o) => o.Id == id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            offer.Company = _context.Companies.FirstOrDefault(c => c.Id == offer.CompanyId);
 
+            //ToDo: Pull form DB
             var applications = ApplicationController._applications.FindAll(a => a.OfferId == offer.Id);
             offer.JobApplications = applications;
 
@@ -101,6 +109,7 @@ namespace CVManager.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //ToDO: Use DB
             var offer = _jobOffers.Find(o => o.Id == id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -114,6 +123,7 @@ namespace CVManager.Controllers
         {
             if (!ModelState.IsValid)
                 return View();
+            //ToDO: Use DB
             var offer = _jobOffers.Find(o => o.Id == model.Id);
             offer.JobTitle = model.JobTitle;
             offer.Description = model.Description;
@@ -126,6 +136,7 @@ namespace CVManager.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //ToDO: Use DB
             _jobOffers.RemoveAll(o => o.Id == id);
 
             return RedirectToAction("Index");
