@@ -147,17 +147,17 @@ namespace CVManager.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Companies = _companies;
+                model.Companies = _context.Companies.ToList();
                 return View(model);
             }
 
-            var id = (_jobOffers.Count == 0) ? 1 : _jobOffers.Max(j => j.Id) + 1; //Generate new id
+            //var id = (_jobOffers.Count == 0) ? 1 : _jobOffers.Max(j => j.Id) + 1; //Generate new id
 
             var newOffer = new JobOffer
             {
-                Id = id,
+                //Id = id,
                 CompanyId = model.CompanyId,
-                Company = _companies.FirstOrDefault(c => c.Id == model.CompanyId),
+                //Company = _companies.FirstOrDefault(c => c.Id == model.CompanyId),
                 Description = model.Description,
                 JobTitle = model.JobTitle,
                 Location = model.Location,
@@ -167,9 +167,9 @@ namespace CVManager.Controllers
                 Created = DateTime.Now
             };
 
-            _jobOffers.Add(newOffer);
-            //_context.JobOfers.Add(newOffer);
-            //await _context.SaveChangesAsync();
+            //_jobOffers.Add(newOffer);
+            _context.JobOfers.Add(newOffer);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
