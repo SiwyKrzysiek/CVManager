@@ -60,7 +60,7 @@ namespace CVManager.Controllers
             }
         };
 
-        private List<JobOffer> loadJobOffers()
+        private List<JobOffer> LoadJobOffers()
         {
             var jobOffers = _context.JobOfers.ToList();
             var companies = _context.Companies.ToList();
@@ -82,7 +82,7 @@ namespace CVManager.Controllers
         [HttpGet]
         public IActionResult Index([FromQuery(Name = "search")] string searchString)
         {
-            var jobOffers = loadJobOffers();
+            var jobOffers = LoadJobOffers();
 
             if (String.IsNullOrEmpty(searchString))
                 return View(jobOffers); //List all
@@ -109,8 +109,8 @@ namespace CVManager.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //ToDO: Use DB
-            var offer = _jobOffers.Find(o => o.Id == id);
+
+            var offer = LoadJobOffers().FirstOrDefault(o => o.Id == id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
