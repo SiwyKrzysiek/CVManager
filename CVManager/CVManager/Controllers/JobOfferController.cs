@@ -159,7 +159,9 @@ namespace CVManager.Controllers
                 Created = DateTime.Now
             };
 
-            _jobOffers.Add(newOffer);
+            //_jobOffers.Add(newOffer);
+            _context.JobOfers.Add(newOffer);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
