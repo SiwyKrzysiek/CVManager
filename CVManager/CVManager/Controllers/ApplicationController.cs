@@ -11,6 +11,8 @@ namespace CVManager.Controllers
     [Route("[controller]/[action]")]
     public class ApplicationController : Controller
     {
+        public static readonly List<JobApplication> _applications = new List<JobApplication>();
+
         [HttpGet]
         public IActionResult Apply(int? id)
         {
@@ -28,10 +30,30 @@ namespace CVManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Apply(JobApplication model)
+        public async Task<ActionResult> Apply(JobApplicationCrateView model)
         {
-            //ToDo: Add application to job offer
-            return RedirectToAction("Index", "Home");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var id = (_applications.Count == 0) ? 1 : _applications.Max(a => a.Id) + 1; //Generate new id
+
+            _applications.Add(new JobApplication()
+            {
+                Id = id,
+                OfferId = model.OfferId,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber,
+                EmailAddress = model.EmailAddress,
+                ContactAgreement = model.ContactAgreement,
+                CvUrl = model.CvUrl,
+                DateOfBirth = model.DateOfBirth,
+                Description = model.Description
+            });
+
+            return RedirectToAction("Details", "JobOffer", new {id = model.OfferId});
         }
     }
 }
