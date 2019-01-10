@@ -12,14 +12,14 @@ namespace CVManager.Controllers
     [Route("[controller]/[action]")]
     public class JobOfferController : Controller
     {
-        public static readonly List<Company> _companies = new List<Company>()
-        {
-            new Company() {Id = 1, Name = "Predica"},
-            new Company() {Id = 2, Name = "Microsoft"},
-            new Company() {Id = 3, Name = "Github"},
-            new Company() {Id = 4, Name = "Havi Logistics"},
-            new Company() {Id = 5, Name = "Sweet Home"}
-        };
+        //public static readonly List<Company> _companies = new List<Company>()
+        //{
+        //    new Company() {Id = 1, Name = "Predica"},
+        //    new Company() {Id = 2, Name = "Microsoft"},
+        //    new Company() {Id = 3, Name = "Github"},
+        //    new Company() {Id = 4, Name = "Havi Logistics"},
+        //    new Company() {Id = 5, Name = "Sweet Home"}
+        //};
 
         //public static readonly List<JobOffer> _jobOffers = new List<JobOffer>
         //{
