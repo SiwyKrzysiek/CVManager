@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using CVManager.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 using CVManager.Models;
 
@@ -58,6 +59,13 @@ namespace CVManager.Controllers
                 ValidUntil = DateTime.Now.AddDays(10)
             }
         };
+
+        private readonly DataContext _context;
+
+        public JobOfferController(DataContext context)
+        {
+            this._context = context;
+        }
 
         [HttpGet]
         public IActionResult Index([FromQuery(Name = "search")] string searchString)
@@ -119,7 +127,8 @@ namespace CVManager.Controllers
         {
             var model = new JobOfferCreateView
             {
-                Companies = _companies //Load available companies list
+                //Companies = _companies //Load available companies list
+                Companies = _context.Companies.ToList() //Load companies from DB
             };
             return View(model);
         }
@@ -136,20 +145,21 @@ namespace CVManager.Controllers
 
             var id = (_jobOffers.Count == 0) ? 1 : _jobOffers.Max(j => j.Id) + 1; //Generate new id
 
-            _jobOffers.Add(new JobOffer
-                {
-                    Id = id,
-                    CompanyId = model.CompanyId,
-                    Company = _companies.FirstOrDefault(c => c.Id == model.CompanyId),
-                    Description = model.Description,
-                    JobTitle = model.JobTitle,
-                    Location = model.Location,
-                    SalaryFrom = model.SalaryFrom,
-                    SalaryTo = model.SalaryTo,
-                    ValidUntil = model.ValidUntil,
-                    Created = DateTime.Now
-                }
-            );
+            var newOffer = new JobOffer
+            {
+                Id = id,
+                CompanyId = model.CompanyId,
+                Company = _companies.FirstOrDefault(c => c.Id == model.CompanyId),
+                Description = model.Description,
+                JobTitle = model.JobTitle,
+                Location = model.Location,
+                SalaryFrom = model.SalaryFrom,
+                SalaryTo = model.SalaryTo,
+                ValidUntil = model.ValidUntil,
+                Created = DateTime.Now
+            };
+
+            _jobOffers.Add(newOffer);
 
             return RedirectToAction("Index");
         }
