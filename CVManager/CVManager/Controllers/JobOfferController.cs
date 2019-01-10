@@ -70,7 +70,13 @@ namespace CVManager.Controllers
         [HttpGet]
         public IActionResult Index([FromQuery(Name = "search")] string searchString)
         {
-            var jobOffers = _jobOffers;
+            var jobOffers = _context.JobOfers.ToList();
+            var companies = _context.Companies.ToList();
+            foreach (var offer in jobOffers)
+            {
+                offer.Company = companies.FirstOrDefault(c => c.Id == offer.CompanyId);
+            }
+
 
             if (String.IsNullOrEmpty(searchString))
                 return View(jobOffers); //List all
