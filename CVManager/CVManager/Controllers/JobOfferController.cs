@@ -123,7 +123,7 @@ namespace CVManager.Controllers
         {
             if (!ModelState.IsValid)
                 return View();
-            //ToDO: Use DB
+
             var offer = LoadJobOffers().FirstOrDefault(o => o.Id == model.Id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -141,8 +141,13 @@ namespace CVManager.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //ToDO: Use DB
-            _jobOffers.RemoveAll(o => o.Id == id);
+
+            var offerToRemove = LoadJobOffers().FirstOrDefault(o => o.Id == id);
+            if (offerToRemove == null)
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
+            _context.JobOfers.Remove(offerToRemove);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
