@@ -11,6 +11,7 @@ namespace CVManager.Controllers
     [Route("[controller]/[action]")]
     public class ApplicationController : Controller
     {
+        //ToDO: Use DB
         public static readonly List<JobApplication> _applications = new List<JobApplication>();
 
         [HttpGet]
@@ -19,6 +20,7 @@ namespace CVManager.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+            //ToDO: Use DB
             var application = _applications.FirstOrDefault(a => a.Id == id);
             if (application == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -32,6 +34,7 @@ namespace CVManager.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+            //ToDO: Use DB
             var offer = JobOfferController._jobOffers.Find(o => o.Id == id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -50,8 +53,10 @@ namespace CVManager.Controllers
                 return View(model);
             }
 
+            //ToDO: Use DB
             var id = (_applications.Count == 0) ? 1 : _applications.Max(a => a.Id) + 1; //Generate new id
 
+            //ToDO: Use DB
             _applications.Add(new JobApplication()
             {
                 Id = id,
