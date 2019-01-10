@@ -72,7 +72,14 @@
         </tr>
         </thead>
         <tbody>
-
+        @foreach (var application in Model.JobApplications)
+        {
+            <tr>
+                <td>@Html.ActionLink(application.FirstName, "Details", "Application", new {id = application.Id})</td>
+                <td>@application.EmailAddress</td>
+                <td>@application.PhoneNumber</td>
+            </tr>
+        }
         </tbody>
     </table>
 </div>
