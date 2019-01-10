@@ -62,7 +62,7 @@ namespace CVManager.Controllers
 
         private List<JobOffer> LoadJobOffers()
         {
-            var jobOffers = _context.JobOfers.ToList();
+            var jobOffers = _context.JobOffers.ToList();
             var companies = _context.Companies.ToList();
             foreach (var offer in jobOffers)
             {
@@ -93,13 +93,13 @@ namespace CVManager.Controllers
 
         public IActionResult Details(int id)
         {
-            var offer = _context.JobOfers.ToList().FirstOrDefault((o) => o.Id == id);
+            var offer = _context.JobOffers.ToList().FirstOrDefault((o) => o.Id == id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             offer.Company = _context.Companies.FirstOrDefault(c => c.Id == offer.CompanyId);
 
             //ToDo: Pull form DB
-            var applications = ApplicationController._applications.FindAll(a => a.OfferId == offer.Id);
+            var applications = _context.JobApplications.ToList().FindAll(a => a.OfferId == offer.Id);
             offer.JobApplications = applications;
 
             return View(offer);
@@ -146,7 +146,7 @@ namespace CVManager.Controllers
             if (offerToRemove == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-            _context.JobOfers.Remove(offerToRemove);
+            _context.JobOffers.Remove(offerToRemove);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
@@ -189,7 +189,7 @@ namespace CVManager.Controllers
             };
 
             //_jobOffers.Add(newOffer);
-            _context.JobOfers.Add(newOffer);
+            _context.JobOffers.Add(newOffer);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
