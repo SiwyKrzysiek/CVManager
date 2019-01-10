@@ -21,44 +21,44 @@ namespace CVManager.Controllers
             new Company() {Id = 5, Name = "Sweet Home"}
         };
 
-        public static readonly List<JobOffer> _jobOffers = new List<JobOffer>
-        {
-            new JobOffer
-            {
-                Id = 1,
-                JobTitle = "C# Programmer",
-                Company = _companies.FirstOrDefault(c => c.Name == "Predica"),
-                Created = DateTime.Now.AddDays(-5),
-                SalaryFrom = 3500,
-                SalaryTo = 6800,
-                Location = "Cracow",
-                Description = "Experienced C# developer with electronic background. The main task would be building smart devices software.",
-                ValidUntil = DateTime.Now.AddDays(30)
-            },
-            new JobOffer{
-                Id = 2,
-                JobTitle = "Frontend Developer",
-                Company = _companies.FirstOrDefault(c => c.Name =="Microsoft"),
-                Created = DateTime.Now.AddDays(-2),
-                Description = "Developing Office 365 front end interface. Working with SharePoint and graph API. Connecting with AAD and building ML for Mailbox smart assistant.",
-                Location = "Poland",
-                SalaryFrom = 2000,
-                SalaryTo = 10000,
-                ValidUntil = DateTime.Now.AddDays(20)
-            },
-            new JobOffer
-            {
-                Id = 3,
-                JobTitle = "Baker",
-                Company = _companies.FirstOrDefault(c => c.Name == "Sweet Home"),
-                Created = DateTime.Now.AddHours(-8),
-                SalaryFrom = 1500,
-                SalaryTo = 4000,
-                Location = "Warsaw",
-                Description = "Baker in newly opened bakery. Baking tasty cakes and cokes. Experience with home made ice cram would be an additional benefit",
-                ValidUntil = DateTime.Now.AddDays(10)
-            }
-        };
+        //public static readonly List<JobOffer> _jobOffers = new List<JobOffer>
+        //{
+        //    new JobOffer
+        //    {
+        //        Id = 1,
+        //        JobTitle = "C# Programmer",
+        //        Company = _companies.FirstOrDefault(c => c.Name == "Predica"),
+        //        Created = DateTime.Now.AddDays(-5),
+        //        SalaryFrom = 3500,
+        //        SalaryTo = 6800,
+        //        Location = "Cracow",
+        //        Description = "Experienced C# developer with electronic background. The main task would be building smart devices software.",
+        //        ValidUntil = DateTime.Now.AddDays(30)
+        //    },
+        //    new JobOffer{
+        //        Id = 2,
+        //        JobTitle = "Frontend Developer",
+        //        Company = _companies.FirstOrDefault(c => c.Name =="Microsoft"),
+        //        Created = DateTime.Now.AddDays(-2),
+        //        Description = "Developing Office 365 front end interface. Working with SharePoint and graph API. Connecting with AAD and building ML for Mailbox smart assistant.",
+        //        Location = "Poland",
+        //        SalaryFrom = 2000,
+        //        SalaryTo = 10000,
+        //        ValidUntil = DateTime.Now.AddDays(20)
+        //    },
+        //    new JobOffer
+        //    {
+        //        Id = 3,
+        //        JobTitle = "Baker",
+        //        Company = _companies.FirstOrDefault(c => c.Name == "Sweet Home"),
+        //        Created = DateTime.Now.AddHours(-8),
+        //        SalaryFrom = 1500,
+        //        SalaryTo = 4000,
+        //        Location = "Warsaw",
+        //        Description = "Baker in newly opened bakery. Baking tasty cakes and cokes. Experience with home made ice cram would be an additional benefit",
+        //        ValidUntil = DateTime.Now.AddDays(10)
+        //    }
+        //};
 
         private List<JobOffer> LoadJobOffers()
         {
@@ -98,7 +98,6 @@ namespace CVManager.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             offer.Company = _context.Companies.FirstOrDefault(c => c.Id == offer.CompanyId);
 
-            //ToDo: Pull form DB
             var applications = _context.JobApplications.ToList().FindAll(a => a.OfferId == offer.Id);
             offer.JobApplications = applications;
 
@@ -156,7 +155,6 @@ namespace CVManager.Controllers
         {
             var model = new JobOfferCreateView
             {
-                //Companies = _companies //Load available companies list
                 Companies = _context.Companies.ToList() //Load companies from DB
             };
             return View(model);
@@ -172,13 +170,9 @@ namespace CVManager.Controllers
                 return View(model);
             }
 
-            //var id = (_jobOffers.Count == 0) ? 1 : _jobOffers.Max(j => j.Id) + 1; //Generate new id
-
             var newOffer = new JobOffer
             {
-                //Id = id,
                 CompanyId = model.CompanyId,
-                //Company = _companies.FirstOrDefault(c => c.Id == model.CompanyId),
                 Description = model.Description,
                 JobTitle = model.JobTitle,
                 Location = model.Location,
@@ -188,7 +182,6 @@ namespace CVManager.Controllers
                 Created = DateTime.Now
             };
 
-            //_jobOffers.Add(newOffer);
             _context.JobOffers.Add(newOffer);
             await _context.SaveChangesAsync();
 

@@ -12,9 +12,6 @@ namespace CVManager.Controllers
     [Route("[controller]/[action]")]
     public class ApplicationController : Controller
     {
-        //ToDO: Use DB
-        public static readonly List<JobApplication> _applications = new List<JobApplication>();
-
         private readonly DataContext _context;
 
         public ApplicationController(DataContext context)
@@ -40,8 +37,6 @@ namespace CVManager.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            //ToDO: Use DB
-            //var application = _applications.FirstOrDefault(a => a.Id == id);
             var application = _context.JobApplications.ToList().FirstOrDefault(a => a.Id == id);
             if (application == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -73,9 +68,6 @@ namespace CVManager.Controllers
                 return View(model);
             }
 
-            //ToDO: Use DB
-            var id = (_applications.Count == 0) ? 1 : _applications.Max(a => a.Id) + 1; //Generate new id
-
             var newApplication = new JobApplication()
             {
                 OfferId = model.OfferId,
@@ -88,21 +80,6 @@ namespace CVManager.Controllers
                 DateOfBirth = model.DateOfBirth,
                 Description = model.Description
             };
-
-            ////ToDO: Use DB
-            //_applications.Add(new JobApplication()
-            //{
-            //    Id = id,
-            //    OfferId = model.OfferId,
-            //    FirstName = model.FirstName,
-            //    LastName = model.LastName,
-            //    PhoneNumber = model.PhoneNumber,
-            //    EmailAddress = model.EmailAddress,
-            //    ContactAgreement = model.ContactAgreement,
-            //    CvUrl = model.CvUrl,
-            //    DateOfBirth = model.DateOfBirth,
-            //    Description = model.Description
-            //});
 
             _context.JobApplications.Add(newApplication);
             await _context.SaveChangesAsync();
