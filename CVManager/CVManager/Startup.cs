@@ -33,8 +33,10 @@ namespace CVManager
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=BlogEfDB;Trusted_Connection=True;";
+            //var connection = @"Server=(localdb)\mssqllocaldb;Database=BlogEfDB;Trusted_Connection=True;";
+            var connection = this.Configuration["SqlConnectionString"];
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
+            //services.AddTransient<INbpInfoManager, NbpInfoManager>(); This is how you can and object tha could be passed to contolers constructors
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

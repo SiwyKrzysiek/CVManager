@@ -1,65 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CVManager.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 using CVManager.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CVManager.Controllers
 {
     [Route("[controller]/[action]")]
     public class JobOfferController : Controller
     {
-        //public static readonly List<Company> _companies = new List<Company>()
-        //{
-        //    new Company() {Id = 1, Name = "Predica"},
-        //    new Company() {Id = 2, Name = "Microsoft"},
-        //    new Company() {Id = 3, Name = "Github"},
-        //    new Company() {Id = 4, Name = "Havi Logistics"},
-        //    new Company() {Id = 5, Name = "Sweet Home"}
-        //};
-
-        //public static readonly List<JobOffer> _jobOffers = new List<JobOffer>
-        //{
-        //    new JobOffer
-        //    {
-        //        Id = 1,
-        //        JobTitle = "C# Programmer",
-        //        Company = _companies.FirstOrDefault(c => c.Name == "Predica"),
-        //        Created = DateTime.Now.AddDays(-5),
-        //        SalaryFrom = 3500,
-        //        SalaryTo = 6800,
-        //        Location = "Cracow",
-        //        Description = "Experienced C# developer with electronic background. The main task would be building smart devices software.",
-        //        ValidUntil = DateTime.Now.AddDays(30)
-        //    },
-        //    new JobOffer{
-        //        Id = 2,
-        //        JobTitle = "Frontend Developer",
-        //        Company = _companies.FirstOrDefault(c => c.Name =="Microsoft"),
-        //        Created = DateTime.Now.AddDays(-2),
-        //        Description = "Developing Office 365 front end interface. Working with SharePoint and graph API. Connecting with AAD and building ML for Mailbox smart assistant.",
-        //        Location = "Poland",
-        //        SalaryFrom = 2000,
-        //        SalaryTo = 10000,
-        //        ValidUntil = DateTime.Now.AddDays(20)
-        //    },
-        //    new JobOffer
-        //    {
-        //        Id = 3,
-        //        JobTitle = "Baker",
-        //        Company = _companies.FirstOrDefault(c => c.Name == "Sweet Home"),
-        //        Created = DateTime.Now.AddHours(-8),
-        //        SalaryFrom = 1500,
-        //        SalaryTo = 4000,
-        //        Location = "Warsaw",
-        //        Description = "Baker in newly opened bakery. Baking tasty cakes and cokes. Experience with home made ice cram would be an additional benefit",
-        //        ValidUntil = DateTime.Now.AddDays(10)
-        //    }
-        //};
-
         private List<JobOffer> LoadJobOffers()
         {
             var jobOffers = _context.JobOffers.ToList();
@@ -91,13 +45,12 @@ namespace CVManager.Controllers
             return View(searchResults);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var offer = _context.JobOffers.ToList().FirstOrDefault((o) => o.Id == id);
+            var offer = await _context.JobOffers.Include(x => x.Company).Include(x => x.JobApplications).FirstOrDefaultAsync(o => o.Id == id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            offer.Company = _context.Companies.FirstOrDefault(c => c.Id == offer.CompanyId);
-
+           
             var applications = _context.JobApplications.ToList().FindAll(a => a.OfferId == offer.Id);
             offer.JobApplications = applications;
 
