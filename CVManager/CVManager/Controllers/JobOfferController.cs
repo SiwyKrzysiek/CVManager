@@ -47,7 +47,7 @@ namespace CVManager.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var offer = await _context.JobOffers.Include(x => x.Company).Include(x => x.JobApplications).FirstOrDefaultAsync(o => o.Id == id);
+            var offer = await _context.JobOffers.Include(x => x.Company).FirstOrDefaultAsync(o => o.Id == id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
            
