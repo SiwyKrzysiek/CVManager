@@ -21,11 +21,11 @@ namespace CVManager.Controllers
             this._context = context;
         }
 
-        private async Task<List<JobOffer>> LoadJobOffersAsync()
+        private List<JobOffer> LoadJobOffers()
         {
-            var jobOffers = await _context.JobOffers.ToListAsync();
-            var companies = await _context.Companies.ToListAsync();
-            var applications = await _context.JobApplications.ToListAsync();
+            var jobOffers = _context.JobOffers.ToList();
+            var companies = _context.Companies.ToList();
+            var applications = _context.JobApplications.ToList();
 
             foreach (var offer in jobOffers)
             {
@@ -41,9 +41,9 @@ namespace CVManager.Controllers
         /// </summary>
         /// <returns>All job offers</returns>
         [HttpGet]
-        public async Task<IEnumerable<JobOffer>> Offers()
+        public IEnumerable<JobOffer> Offers()
         {
-            var offers = await LoadJobOffersAsync();
+            var offers = LoadJobOffers();
 
             return offers;
         }
