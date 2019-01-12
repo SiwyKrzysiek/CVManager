@@ -40,12 +40,13 @@ namespace CVManager.Controllers
         /// Get all job offers
         /// </summary>
         /// <returns>All job offers</returns>
+        //ToDo: Try to make it async
         [HttpGet]
-        public IEnumerable<JobOffer> Offers()
+        public IActionResult Offers()
         {
             var offers = LoadJobOffers();
 
-            return offers;
+            return Ok(offers);
         }
 
         /// <summary>
@@ -71,5 +72,6 @@ namespace CVManager.Controllers
 
             return Ok(offer);
         }
+
     }
 }
