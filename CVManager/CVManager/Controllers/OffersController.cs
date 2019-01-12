@@ -47,5 +47,29 @@ namespace CVManager.Controllers
 
             return offers;
         }
+
+        /// <summary>
+        /// Get job offer with given id
+        /// </summary>
+        /// <param name="id">Id of job offer</param>
+        /// <returns>Job offer wiht matching id</returns>
+        [Route("{controler}/{acion}/{id}")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Offers([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var offer = await _context.JobOffers.FindAsync(id);
+
+            if (offer == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(offer);
+        }
     }
 }
