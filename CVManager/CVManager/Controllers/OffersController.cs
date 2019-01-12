@@ -54,7 +54,6 @@ namespace CVManager.Controllers
         /// </summary>
         /// <param name="id">Id of job offer</param>
         /// <returns>Job offer wiht matching id</returns>
-        [Route("{controler}/{acion}/{id}")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Offers([FromRoute] int id)
         {
