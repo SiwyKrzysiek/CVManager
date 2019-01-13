@@ -22,16 +22,22 @@ namespace CVManager.Controllers
 
         // GET: api/PagingOffers/5
         [HttpGet("{pageNumber}", Name = "Get")]
-        public IActionResult Get(int pageNumber = 1)
+        //[HttpGet]
+        public IActionResult Get([FromRoute] int pageNumber = 1, [FromQuery(Name = "search")] string searchString = "")
         {
             const int pageSize = 2;
-            int recordCount = _context.JobOffers.Count();
+
+            var offers = LoadJobOffers();
+            if (!string.IsNullOrEmpty(searchString))
+                offers = offers.Where(o => o.JobTitle.Contains(searchString)).ToList();
+
+            int recordCount = offers.Count();
             int pagesCount = (int)Math.Ceiling((double) recordCount / pageSize);
 
             if (pageNumber > pagesCount || pageNumber < 1)
                 return BadRequest();
 
-            var offers = LoadJobOffers().Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            offers = offers.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
 
             return Ok(new JobOffersPagingView() {JobOffers = offers, PagesCount = pagesCount});

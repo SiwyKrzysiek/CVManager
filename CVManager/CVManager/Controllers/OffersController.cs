@@ -42,9 +42,11 @@ namespace CVManager.Controllers
         /// <returns>All job offers</returns>
         //ToDo: Try to make it async
         [HttpGet]
-        public IActionResult Offers()
+        public IActionResult Offers([FromQuery(Name = "search")] string searchString = "")
         {
             var offers = LoadJobOffers();
+            if (!string.IsNullOrEmpty(searchString))
+                offers = offers.Where(o => o.JobTitle.Contains(searchString)).ToList();
 
             return Ok(offers);
         }
