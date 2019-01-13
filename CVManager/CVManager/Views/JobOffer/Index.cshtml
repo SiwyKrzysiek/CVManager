@@ -63,16 +63,18 @@
             let toolbar = document.getElementById("pageList");
             clearChildren(toolbar);
 
-
+            for (let i = 1; i <= pagesCount; i++) {
+                toolbar.appendChild(createPageButton(i));
+            }
         }
 
-        function CratePageButton(pageNumber) {
+        function createPageButton(pageNumber) {
             let button = document.createElement("button");
 
             button.setAttribute("type", "button");
-            button.className("btn btn-info");
+            button.className = "btn btn-info";
             button.appendChild(document.createTextNode(pageNumber));
-            button.onclick = loadPage(pageNumber);
+            button.onclick = () => loadPage(pageNumber);
 
             return button;
         }
