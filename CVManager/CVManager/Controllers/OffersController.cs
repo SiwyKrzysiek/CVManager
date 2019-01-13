@@ -57,7 +57,7 @@ namespace CVManager.Controllers
         /// Get job offer with given id
         /// </summary>
         /// <param name="id">Id of job offer</param>
-        /// <returns>Job offer wiht matching id</returns>
+        /// <returns>Job offer with matching id</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Offers([FromRoute] int id)
         {
@@ -76,5 +76,27 @@ namespace CVManager.Controllers
             return Ok(offer);
         }
 
+        /// <summary>
+        /// Get job offer with given id
+        /// </summary>
+        /// <param name="id">Json with id parameter specifying job offer</param>
+        /// <returns>Job offer with matching id</returns>
+        [HttpPost]
+        public IActionResult Post([FromBody] ItemId id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var offer = _context.JobOffers.FirstOrDefault(o => o.Id == id.Id);
+
+            if (offer == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(offer);
+        }
     }
 }

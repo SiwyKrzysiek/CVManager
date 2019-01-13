@@ -17,7 +17,14 @@
             Get job offer with given id
             </summary>
             <param name="id">Id of job offer</param>
-            <returns>Job offer wiht matching id</returns>
+            <returns>Job offer with matching id</returns>
+        </member>
+        <member name="M:CVManager.Controllers.OffersController.Post(CVManager.Models.ItemId)">
+            <summary>
+            Get job offer with given id
+            </summary>
+            <param name="id">Json with id parameter specifying job offer</param>
+            <returns>Job offer with matching id</returns>
         </member>
     </members>
 </doc>
