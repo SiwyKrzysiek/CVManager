@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CVManager.Controllers
 {
-    [Route("[controller]/[action]")]
     public class JobOfferController : Controller
     {
         private List<JobOffer> LoadJobOffers()

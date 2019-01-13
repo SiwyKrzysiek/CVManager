@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CVManager.Controllers
 {
-    [Route("[controller]/[action]")]
     public class ApplicationController : Controller
     {
         private readonly DataContext _context;
