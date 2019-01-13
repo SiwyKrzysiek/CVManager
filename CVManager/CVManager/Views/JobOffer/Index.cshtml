@@ -19,16 +19,26 @@
 
         <table class="table table-striped table-hover">
             <thead class="thead-dark">
-                @*//For some reason this class is missing*@
-                <tr>
-                    <th scope="col">Job Title</th>
-                    <th scope="col">Company</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Created</th>
-                </tr>
+            @*//For some reason this class is missing*@
+            <tr>
+                <th scope="col">Job Title</th>
+                <th scope="col">Company</th>
+                <th scope="col">Location</th>
+                <th scope="col">Created</th>
+            </tr>
             </thead>
             <tbody id="table"></tbody>
         </table>
+
+        <div class="btn-toolbar" role="toolbar" aria-label="Paging toolbar" style="margin-bottom: 20px; float: right">
+            <div class="btn-group" role="group" aria-label="Pages" id="pageList">
+                <button type="button" class="btn btn-info active">1</button>
+                <button type="button" class="btn btn-info">2</button>
+                <button type="button" class="btn btn-info">3</button>
+                <button type="button" class="btn btn-info">4</button>
+            </div>
+        </div>
+        
 
         @Html.ActionLink("Create job offer", "Create", "JobOffer", null, new { @class = "btn btn-primary" })
     </div>
@@ -39,10 +49,40 @@
     <script>
         let url = "/api/offers";
 
-        $(document).ready(function() {
-            $.getJSON(url).done(function(data) {
-                renderOffers(data);
+        function loadPage(pageNumber) {
+            $.getJSON(`/api/PagingOffers/${pageNumber}`).done(function (data) {
+                let offers = data.jobOffers;
+                let pagesCount = data.pagesCount;
+
+                renderOffers(offers);
+                renderPaging(pagesCount);
             });
+        }
+
+        function renderPaging(pagesCount) {
+            let toolbar = document.getElementById("pageList");
+            clearChildren(toolbar);
+
+
+        }
+
+        function CratePageButton(pageNumber) {
+            let button = document.createElement("button");
+
+            button.setAttribute("type", "button");
+            button.className("btn btn-info");
+            button.appendChild(document.createTextNode(pageNumber));
+            button.onclick = loadPage(pageNumber);
+
+            return button;
+        }
+
+        $(document).ready(function() {
+            //$.getJSON(url).done(function(data) {
+            //    renderOffers(data);
+            //});
+
+            loadPage(1);
         });
 
         function renderOffers(offers) {
