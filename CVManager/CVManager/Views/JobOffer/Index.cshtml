@@ -43,7 +43,7 @@
         let url = "/api/offers";
 
         $(document).ready(function() {
-            $.getJSON(url).done(function (data) {
+            $.getJSON(url).done(function(data) {
                 renderOffers(data);
             });
         });
@@ -66,9 +66,20 @@
             tr.appendChild(document.createElement("td")).appendChild(link);
             tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(offer.company.name));
             tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(offer.location));
-            tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(offer.created.substr(0, 10)));
+            tr.appendChild(document.createElement("td"))
+                .appendChild(document.createTextNode(offer.created.substr(0, 10)));
 
             return tr;
+        }
+
+        function find() {
+            let searchString = document.getElementById("search").value;
+
+            console.log(searchString);
+
+            $.getJSON(url + `?search=${searchString}`).done(function(data) {
+                renderOffers(data);
+            });
         }
 
     </script>
