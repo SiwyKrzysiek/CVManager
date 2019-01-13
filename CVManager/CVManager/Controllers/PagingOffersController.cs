@@ -32,6 +32,9 @@ namespace CVManager.Controllers
                 offers = offers.Where(o => o.JobTitle.Contains(searchString)).ToList();
 
             int recordCount = offers.Count();
+            if (recordCount == 0)
+                return Ok(new JobOffersPagingView() { JobOffers = offers, PagesCount = 1 });
+
             int pagesCount = (int)Math.Ceiling((double) recordCount / pageSize);
 
             if (pageNumber > pagesCount || pageNumber < 1)
