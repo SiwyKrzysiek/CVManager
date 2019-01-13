@@ -33,15 +33,9 @@ namespace CVManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index([FromQuery(Name = "search")] string searchString)
+        public IActionResult Index()
         {
-            var jobOffers = LoadJobOffers();
-
-            if (String.IsNullOrEmpty(searchString))
-                return View(jobOffers); //List all
-
-            var searchResults = jobOffers.FindAll(o => o.JobTitle.Contains(searchString));
-            return View(searchResults);
+            return View();
         }
 
         public async Task<IActionResult> Details(int id)
