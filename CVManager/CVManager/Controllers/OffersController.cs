@@ -36,11 +36,13 @@ namespace CVManager.Controllers
             return jobOffers;
         }
 
+
         /// <summary>
-        /// Get all job offers
+        /// Get all job offers that have selected text inside.
+        /// If searchString is empty then it returns all offers.
         /// </summary>
-        /// <returns>All job offers</returns>
-        //ToDo: Try to make it async
+        /// <param name="searchString">Case sensitive fragment of job offer title</param>
+        /// <returns>All job offers that match search</returns>
         [HttpGet]
         public IActionResult Offers([FromQuery(Name = "search")] string searchString = "")
         {
