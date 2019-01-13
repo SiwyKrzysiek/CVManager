@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CVManager</name>
+    </assembly>
+    <members>
+        <member name="M:CVManager.Controllers.OffersController.Offers(System.String)">
+            <summary>
+            Get all job offers that have selected text inside.
+            If searchString is empty then it returns all offers.
+            </summary>
+            <param name="searchString">Case sensitive fragment of job offer title</param>
+            <returns>All job offers that match search</returns>
+        </member>
+        <member name="M:CVManager.Controllers.OffersController.Offers(System.Int32)">
+            <summary>
+            Get job offer with given id
+            </summary>
+            <param name="id">Id of job offer</param>
+            <returns>Job offer wiht matching id</returns>
+        </member>
+    </members>
+</doc>
