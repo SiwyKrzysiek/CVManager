@@ -47,13 +47,13 @@ namespace CVManager
             {
                 c.SwaggerDoc("v1", new Info
                 {
-                    Title = "lab5",
+                    Title = "CVManager",
                     Version = "v1",
-                    Description = "Swagger example",
+                    Description = "Documentation",
                     Contact = new Contact
                     {
-                        Name = "Radoslaw Osinski",
-                        Email = "rad.osn@outlook.com"
+                        Name = "Krzysztof Dąbrowski",
+                        Email = "293101@pw.edu.pl"
                     }
                 });
                 // Set the comments path for the Swagger JSON and UI.
