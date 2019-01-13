@@ -41,7 +41,7 @@
 @section Scripts
 {
     <script>
-        let url = "/api/offers";
+        let url = "/api/PagingOffers";
         let currentSearch = "";
 
         $(document).ready(function() {
@@ -49,7 +49,7 @@
         });
 
         function loadPage(pageNumber) {
-            $.getJSON(`/api/PagingOffers/${pageNumber}?search=${currentSearch}`).done(function (data) {
+            $.getJSON(`${url}/${pageNumber}?search=${currentSearch}`).done(function(data) {
                 let offers = data.jobOffers;
                 let pagesCount = data.pagesCount;
 
