@@ -8,17 +8,14 @@
     <div class="col-sm-12">
         <h2>Job Offer list</h2>
 
-        @using (Html.BeginForm("Index", "JobOffer", FormMethod.Get)) //Search bar
-        {
-            <div class="input-group col-md-12" style="margin-bottom: 14px">
-                <input type="text" class="form-control" placeholder="Search by offer title.." name="search" id="search" />
-                <span class="input-group-btn">
-                    <button class="btn btn-info" type="submit">
-                        <i class="glyphicon glyphicon-search"></i>
-                    </button>
-                </span>
-            </div>
-        }
+        <div class="input-group col-md-12" style="margin-bottom: 14px">
+            <input type="text" class="form-control" placeholder="Search by offer title.." name="search" id="search" />
+            <span class="input-group-btn">
+                <button class="btn btn-info" type="button" onclick="find()">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </span>
+        </div>
 
         <table class="table table-striped table-hover">
             <thead class="thead-dark">
@@ -89,6 +86,8 @@
             $.getJSON(url + `?search=${searchString}`).done(function(data) {
                 renderOffers(data);
             });
+
+            return false; //Don't submit form when button is pressed
         }
 
     </script>
