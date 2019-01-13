@@ -48,44 +48,42 @@
 {
     <script>
         let url = "/api/offers";
+        let currentSearch = "";
+
+        $(document).ready(function() {
+            loadPage(1);
+        });
 
         function loadPage(pageNumber) {
-            $.getJSON(`/api/PagingOffers/${pageNumber}`).done(function (data) {
+            $.getJSON(`/api/PagingOffers/${pageNumber}?search=${currentSearch}`).done(function (data) {
                 let offers = data.jobOffers;
                 let pagesCount = data.pagesCount;
 
                 renderOffers(offers);
-                renderPaging(pagesCount);
+                renderPaging(pagesCount, pageNumber);
             });
         }
 
-        function renderPaging(pagesCount) {
+        function renderPaging(pagesCount, currentPage) {
             let toolbar = document.getElementById("pageList");
             clearChildren(toolbar);
 
             for (let i = 1; i <= pagesCount; i++) {
-                toolbar.appendChild(createPageButton(i));
+                let active = (i === currentPage);
+                toolbar.appendChild(createPageButton(i, active));
             }
         }
 
-        function createPageButton(pageNumber) {
+        function createPageButton(pageNumber, active = false) {
             let button = document.createElement("button");
-
             button.setAttribute("type", "button");
             button.className = "btn btn-info";
+            if (active) button.classList.add("active");
             button.appendChild(document.createTextNode(pageNumber));
             button.onclick = () => loadPage(pageNumber);
 
             return button;
         }
-
-        $(document).ready(function() {
-            //$.getJSON(url).done(function(data) {
-            //    renderOffers(data);
-            //});
-
-            loadPage(1);
-        });
 
         function renderOffers(offers) {
             var table = document.getElementById("table");
@@ -121,13 +119,8 @@
         }
 
         function find() {
-            let searchString = document.getElementById("search").value;
-
-            console.log(searchString);
-
-            $.getJSON(url + `?search=${searchString}`).done(function(data) {
-                renderOffers(data);
-            });
+            currentSearch = document.getElementById("search").value;
+            loadPage(1);
 
             return false; //Don't submit form when button is pressed
         }
