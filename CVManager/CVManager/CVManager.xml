@@ -19,12 +19,12 @@
             <param name="id">Id of job offer</param>
             <returns>Job offer with matching id</returns>
         </member>
-        <member name="M:CVManager.Controllers.OffersController.Post(CVManager.Models.ItemId)">
+        <member name="M:CVManager.Controllers.OffersController.Post(CVManager.Models.JobOfferCreate)">
             <summary>
-            Get job offer with given id
+            Add new offer to the data base
             </summary>
-            <param name="id">Json with id parameter specifying job offer</param>
-            <returns>Job offer with matching id</returns>
+            <param name="offer">Json with job offer to be added</param>
+            <returns>Response code and if successful redirection to created offer</returns>
         </member>
     </members>
 </doc>

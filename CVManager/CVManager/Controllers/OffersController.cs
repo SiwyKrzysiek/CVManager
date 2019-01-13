@@ -77,26 +77,34 @@ namespace CVManager.Controllers
         }
 
         /// <summary>
-        /// Get job offer with given id
+        /// Add new offer to the data base
         /// </summary>
-        /// <param name="id">Json with id parameter specifying job offer</param>
-        /// <returns>Job offer with matching id</returns>
+        /// <param name="offer">Json with job offer to be added</param>
+        /// <returns>Response code and if successful redirection to created offer</returns>
         [HttpPost]
-        public IActionResult Post([FromBody] ItemId id)
+        public async Task<IActionResult> Post([FromBody] JobOfferCreate offer)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var offer = _context.JobOffers.FirstOrDefault(o => o.Id == id.Id);
-
-            if (offer == null)
+            var newOffer = new JobOffer()
             {
-                return NotFound();
-            }
+                CompanyId = offer.CompanyId,
+                Description = offer.Description,
+                JobTitle = offer.JobTitle,
+                Location = offer.Location,
+                SalaryFrom = offer.SalaryFrom,
+                SalaryTo = offer.SalaryTo,
+                ValidUntil = offer.ValidUntil,
+                Created = DateTime.Now
+            };
 
-            return Ok(offer);
+            _context.Add(newOffer);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Offers", new {id = newOffer.Id}, offer);
         }
     }
 }
