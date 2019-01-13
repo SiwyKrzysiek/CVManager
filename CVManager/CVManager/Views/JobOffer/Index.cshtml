@@ -44,7 +44,13 @@
         let url = "/api/PagingOffers";
         let currentSearch = "";
 
-        $(document).ready(function() {
+        $(document).ready(function () {
+            document.getElementById("search").onkeydown = function() { //Confirm search on ENTER
+                if (event.keyCode == 13) {
+                    find();
+                };
+            };
+
             loadPage(1);
         });
 
