@@ -49,10 +49,13 @@
         });
 
         function renderOffers(offers) {
+            var table = document.getElementById("table");
+            clearChildren(table);
+
             for (let offer of offers) {
                 let tr = crateTableEntry(offer);
 
-                document.getElementById("table").appendChild(tr);
+                table.appendChild(tr);
             }
         }
 
@@ -70,6 +73,12 @@
                 .appendChild(document.createTextNode(offer.created.substr(0, 10)));
 
             return tr;
+        }
+
+        function clearChildren(element) {
+            while (element.lastChild) {
+                element.removeChild(element.lastChild);
+            }
         }
 
         function find() {
