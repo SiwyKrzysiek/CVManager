@@ -26,5 +26,13 @@
             <param name="offer">Json with job offer to be added</param>
             <returns>Response code and if successful redirection to created offer</returns>
         </member>
+        <member name="M:CVManager.Controllers.OffersController.Post(System.Int32,CVManager.Models.JobOffer)">
+            <summary>
+            Updates specified job offer
+            </summary>
+            <param name="id">Id of offer to be updated</param>
+            <param name="offerData">Full details of update. This will replace old offer</param>
+            <returns>Only response code</returns>
+        </member>
     </members>
 </doc>

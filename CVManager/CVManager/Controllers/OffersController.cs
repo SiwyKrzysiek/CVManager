@@ -106,5 +106,32 @@ namespace CVManager.Controllers
 
             return CreatedAtAction("Offers", new {id = newOffer.Id}, offer);
         }
+
+        /// <summary>
+        /// Updates specified job offer
+        /// </summary>
+        /// <param name="id">Id of offer to be updated</param>
+        /// <param name="offerData">Full details of update. This will replace old offer</param>
+        /// <returns>Only response code</returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Post([FromRoute] int id, [FromBody] JobOffer offerData)
+        {
+            var offer = await _context.JobOffers.FirstOrDefaultAsync(o => o.Id == id);
+            if (offer == null)
+                return BadRequest();
+
+            offer.JobTitle = offerData.JobTitle;
+            offer.CompanyId = offerData.CompanyId;
+            offer.Created = offer.Created;
+            offer.Description = offer.Description;
+            offer.JobApplications = offerData.JobApplications;
+            offer.Location = offerData.Location;
+            offer.SalaryFrom = offerData.SalaryFrom;
+            offer.SalaryTo = offerData.SalaryTo;
+            offer.ValidUntil = offerData.ValidUntil;
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
