@@ -118,7 +118,7 @@ namespace CVManager.Controllers
         {
             var offer = await _context.JobOffers.FirstOrDefaultAsync(o => o.Id == id);
             if (offer == null)
-                return BadRequest();
+                return NotFound();
 
             offer.JobTitle = offerData.JobTitle;
             offer.CompanyId = offerData.CompanyId;
@@ -132,6 +132,26 @@ namespace CVManager.Controllers
 
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        /// <summary>
+        /// Deletes job offer with specified id
+        /// </summary>
+        /// <param name="id">Id of offer to be removed</param>
+        /// <returns>Only response code</returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var todoItem = await _context.JobOffers.FindAsync(id);
+            if (todoItem == null)
+            {
+                return NotFound();
+            }
+
+            _context.JobOffers.Remove(todoItem);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

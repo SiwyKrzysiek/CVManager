@@ -34,5 +34,12 @@
             <param name="offerData">Full details of update. This will replace old offer</param>
             <returns>Only response code</returns>
         </member>
+        <member name="M:CVManager.Controllers.OffersController.Delete(System.Int32)">
+            <summary>
+            Deletes job offer with specified id
+            </summary>
+            <param name="id">Id of offer to be removed</param>
+            <returns>Only response code</returns>
+        </member>
     </members>
 </doc>
