@@ -18,4 +18,8 @@
     </DotNetCliToolReference>  
 
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\NewFolder\" />
+  </ItemGroup>
 </Project>

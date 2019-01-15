@@ -1,6 +1,4 @@
-﻿@*@model JobOfferCreateView*@
-
-@{
+﻿@{
     ViewData["Title"] = "Create job offer";
 }
 
@@ -8,70 +6,46 @@
     <div class="col-sm-12">
         <h2>New Job Offer</h2>
         <form id="createJobOfferForm">
-            @*@Html.AntiForgeryToken()*@
             <div class="form-group">
                 <label for="JobTitle">Job Title</label>
                 <input data-bind="value : jobTitle, valueUpdate: 'afterkeydown'" required class="form-control text-box single-line" id="JobTitle" name="JobTitle" type="text">
-                @*@Html.LabelFor(m => m.JobTitle)
-                    @Html.EditorFor(m => m.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
                 <label for="Companies">Company</label>
                 <select data-bind="value: companyId, options: companies, optionsText: 'name', optionsValue: 'id'" class="form-control" id="Companies" name="Companies"></select>
-                @*@Html.LabelFor(m => m.Company)
-                    @Html.DropDownListFor(m => m.CompanyId,
-                        Model.Companies.Select(c => new SelectListItem {Text =c.Name, Value = c.Id.ToString() }),
-                        new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.CompanyId, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
                 <label for="Location">Location</label>
                 <input data-bind="value : location, valueUpdate: 'afterkeydown'" class="form-control text-box single-line" id="Location" name="Location" type="text">
-                @*@Html.LabelFor(m => m.Location)
-                    @Html.EditorFor(m => m.Location, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
-                @*@Html.LabelFor(m => m.SalaryFrom, "Salary")*@
                 <label for="SalaryFrom">Salary</label>
                 <div class="input-group">
                     <span class="input-group-addon">PLN</span>
                     <input data-bind="value : salaryFrom, valueUpdate: 'afterkeydown'" class="form-control text-box single-line" id="SalaryFrom" placeholder="From" name="SalaryFrom" type="text">
-                    @*@Html.EditorFor(m => m.SalaryFrom, new { htmlAttributes = new { @class = "form-control", placeholder = "From" } })*@
                     <span class="input-group-addon">.00</span>
                 </div>
-                @*@Html.ValidationMessageFor(m => m.SalaryFrom, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
-                @*@Html.LabelFor(m => m.SalaryTo, "Salary")*@
                 <label for="SalaryTo">Salary</label>
                 <div class="input-group">
                     <span class="input-group-addon">PLN</span>
                     <input data-bind="value : salaryTo, valueUpdate: 'afterkeydown'" class="form-control text-box single-line" id="SalaryTo" placeholder="To" name="SalaryTo" type="text">
-                    @*@Html.EditorFor(m => m.SalaryTo, new { htmlAttributes = new { @class = "form-control", placeholder = "To" } })*@
                     <span class="input-group-addon">.00</span>
                 </div>
-                @*@Html.ValidationMessageFor(m => m.SalaryTo, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
-                @*@Html.LabelFor(m => m.ValidUntil)*@
                 <label for="ValidUntil">Valid until</label>
                 <div class="input-group">
                     <input data-bind="value: validUntil" class="form-control text-box single-line" id="ValidUntil" name="ValidUntil" type="date">
-                    @*@Html.EditorFor(m => m.ValidUntil, new { htmlAttributes = new { @class = "form-control", type = "Date" } })*@
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
-                @*@Html.ValidationMessageFor(m => m.ValidUntil, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group description">
                 <label for="Description">Description</label>
                 <textarea data-bind="value: description, valueUpdate: 'afterkeydown'" required minlength="50" class="form-control" data-val="true" data-val-minlength="Description must be at lest 50 characters" data-val-minlength-min="50" data-val-required="The Description field is required." id="Description" name="Description" placeholder="Enter description"></textarea>
-                @*@Html.LabelFor(m => m.Description)*@
-                @*@Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Enter description" })*@
-                @*@Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
                 <button type="button" class="btn btn-primary" id="submitFormButton">Create</button>
@@ -119,7 +93,6 @@
                 <div data-bind="visible: showValidUntil" style="display: none">
                     <label>Valid:</label>
                     <span data-bind="text: validUntilDisplay"></span>
-                    @*<span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>*@
                 </div>
 
                 <a class="btn btn-primary">Apply</a>
