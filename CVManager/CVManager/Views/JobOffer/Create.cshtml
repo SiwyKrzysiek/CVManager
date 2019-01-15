@@ -53,9 +53,11 @@
                 @Html.ValidationMessageFor(m => m.SalaryTo, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.ValidUntil)
+                @*@Html.LabelFor(m => m.ValidUntil)*@
+                <label for="ValidUntil">Valid until</label>
                 <div class="input-group">
-                    @Html.EditorFor(m => m.ValidUntil, new { htmlAttributes = new { @class = "form-control", type = "Date" } })
+                    <input data-bind="value: validUntil" class="form-control text-box single-line" id="ValidUntil" name="ValidUntil" type="date">
+                    @*@Html.EditorFor(m => m.ValidUntil, new { htmlAttributes = new { @class = "form-control", type = "Date" } })*@
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -79,7 +81,7 @@
         <h3 class="panel-title"><strong>Preview:</strong></h3>
     </div>
     <div class="panel-body" style="padding-top: 0; padding-right: 0">
-        <h2 data-bind="text : jobTitle()||'Job title'">Job title PLACEHOLDER</h2>
+        <h2 data-bind="text : jobTitle()||'Job title'"></h2>
         <div class="col-sm-8">
             @* Left section *@
             <div>
@@ -109,12 +111,12 @@
                 </div>
                 <div>
                     <label>Created:</label>
-                    <span>PLACEHOLDER</span>
+                    <span data-bind="text : created()"></span>
                 </div>
-                <div>
+                <div data-bind="visible: showValidUntil">
                     <label>Valid:</label>
+                    <span data-bind="text: validUntilDisplay"></span>
                     @*<span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>*@
-                    <span>PLACEHOLDER</span>
                 </div>
 
                 <div>
@@ -134,23 +136,85 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 
     <script>
+        function reverseDate(date) { //Changes date form YYYY-MM-DD to DD-MM-YYYY
+            if (date) {
+                let parts = date.split("-");
+                return parts[2] + "-" + parts[1] + "-" + parts[0];
+            }
+            return "";
+        }
+
+        function daysBetween(date1, date2) {
+            //Get 1 day in milliseconds
+            var one_day = 1000 * 60 * 60 * 24;
+
+            // Convert both dates to milliseconds
+            var date1_ms = date1.getTime();
+            var date2_ms = date2.getTime();
+
+            // Calculate the difference in milliseconds
+            var difference_ms = date2_ms - date1_ms;
+
+            // Convert back to days and return
+            return Math.round(difference_ms / one_day);
+        }
+
         function MyViewModel() {
             this.jobTitle = ko.observable();
 
             this.location = ko.observable();
             this.showLocation = ko.computed(function() {
-                return (this.location()) ? true : false;
-            }, this);
+                    return (this.location()) ? true : false;
+                },
+                this);
             this.salaryFrom = ko.observable();
 
-            this.showSalaryFrom = ko.computed(function () {
-                return (this.salaryFrom()) ? true : false;
-            }, this);
+            this.showSalaryFrom = ko.computed(function() {
+                    return (this.salaryFrom()) ? true : false;
+                },
+                this);
 
             this.salaryTo = ko.observable();
-            this.showSalaryTo = ko.computed(function () {
-                return (this.salaryTo()) ? true : false;
-            }, this);
+            this.showSalaryTo = ko.computed(function() {
+                    return (this.salaryTo()) ? true : false;
+                },
+                this);
+
+            this.created = ko.computed(function() {
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1; //January is 0!
+                    var yyyy = today.getFullYear();
+
+                    if (dd < 10) {
+                        dd = '0' + dd;
+                    }
+
+                    if (mm < 10) {
+                        mm = '0' + mm;
+                    }
+
+                    today = dd + '.' + mm + '.' + yyyy;
+                    return today;
+                },
+                this);
+
+            this.validUntil = ko.observable();
+            this.validUntilDisplay = ko.computed(function() {
+                    let date = reverseDate(this.validUntil());
+                    let dateParts = date.split("-");
+                    let dateObject = new Date(dateParts[2], parseInt(dateParts[1]) - 1, dateParts[0]);
+
+                    let daysLeft = daysBetween(new Date(), dateObject) + 1;
+
+                    return `For ${daysLeft} days (untill ${dateParts.join(".")})`;
+
+                },
+                this);
+            this.showValidUntil = ko.computed(function() {
+                    return (this.validUntil() ? true : false);
+                },
+                this);
         }
 
         let model = new MyViewModel;
