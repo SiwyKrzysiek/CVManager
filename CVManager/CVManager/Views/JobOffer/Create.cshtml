@@ -101,15 +101,15 @@
                     <label>Company:</label>
                     <span data-bind="text: companyDisplay"></span>
                 </div>
-                <div data-bind="visible: showLocation">
+                <div data-bind="visible: showLocation" style="display: none">
                     <label>Location:</label>
                     <span data-bind="text : location"></span>
                 </div>
-                <div data-bind="visible: salaryFrom">
+                <div data-bind="visible: salaryFrom " style="display: none">
                     <label>Salary from:</label>
                     <span data-bind="text : salaryFrom() + ' (PLN)'"></span>
                 </div>
-                <div data-bind="visible: salaryTo">
+                <div data-bind="visible: salaryTo" style="display: none">
                     <label>Salary to:</label>
                     <span data-bind="text : salaryTo() + ' (PLN)'"></span>
                 </div>
@@ -117,7 +117,7 @@
                     <label>Created:</label>
                     <span data-bind="text : created()"></span>
                 </div>
-                <div data-bind="visible: showValidUntil">
+                <div data-bind="visible: showValidUntil" style="display: none">
                     <label>Valid:</label>
                     <span data-bind="text: validUntilDisplay"></span>
                     @*<span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>*@
