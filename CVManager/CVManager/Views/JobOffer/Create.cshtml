@@ -17,11 +17,13 @@
             @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.Company)
+                <label for="Companies">Company</label>
+                <select data-bind="options: companies, optionsText: 'name', optionsValue: 'id'" class="form-control" id="Companies" name="Companies"></select>
+                @*@Html.LabelFor(m => m.Company)
                 @Html.DropDownListFor(m => m.CompanyId,
                     Model.Companies.Select(c => new SelectListItem {Text =c.Name, Value = c.Id.ToString() }),
                     new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CompanyId, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.CompanyId, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
                 <label for="Location">Location</label>
@@ -161,8 +163,15 @@
             return Math.round(difference_ms / one_day);
         }
 
+        function Company(id, name) {
+            this.id = id;
+            this.name = name;
+        }
+
         function MyViewModel() {
             this.jobTitle = ko.observable();
+
+            this.companies = ko.observableArray([new Company(1, 'France'), new Company(2, 'Germany'), new Company(3, 'Spain')]);
 
             this.location = ko.observable();
             this.showLocation = ko.computed(function() {
