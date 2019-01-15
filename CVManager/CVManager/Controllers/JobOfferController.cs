@@ -97,13 +97,9 @@ namespace CVManager.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<ActionResult> Create()
+        public ActionResult Create()
         {
-            var model = new JobOfferCreateView
-            {
-                Companies = _context.Companies.ToList() //Load companies from DB
-            };
-            return View(model);
+            return View();
         }
 
         [HttpPost]
