@@ -20,6 +20,13 @@ namespace CVManager.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Returns page of job offers records. Can be searched.
+        /// </summary>
+        /// <param name="pageNumber">Number of page to be returned</param>
+        /// <param name="searchString">Case sensitive fragment of job offer that will be searched for.
+        /// If left empty then all offers are returned.</param>
+        /// <returns>One page off job offers</returns>
         // GET: api/PagingOffers/5
         [HttpGet("{pageNumber}", Name = "Get")]
         //[HttpGet]
