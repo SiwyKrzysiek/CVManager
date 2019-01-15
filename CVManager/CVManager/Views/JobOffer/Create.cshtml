@@ -7,15 +7,14 @@
 <div class="row page-box">
     <div class="col-sm-12">
         <h2>New Job Offer</h2>
-        @using (Html.BeginForm())
-        {
+        <form>
             @*@Html.AntiForgeryToken()*@
             <div class="form-group">
                 <label for="JobTitle">Job Title</label>
                 <input data-bind="value : jobTitle" class="form-control text-box single-line" id="JobTitle" name="JobTitle" type="text">
                 @*@Html.LabelFor(m => m.JobTitle)
-                @Html.EditorFor(m => m.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })*@
+            @Html.EditorFor(m => m.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.Company)
@@ -28,14 +27,16 @@
                 <label for="Location">Location</label>
                 <input data-bind="value : location" class="form-control text-box single-line" id="Location" name="Location" type="text">
                 @*@Html.LabelFor(m => m.Location)
-                @Html.EditorFor(m => m.Location, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })*@
+            @Html.EditorFor(m => m.Location, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.SalaryFrom, "Salary")
+                @*@Html.LabelFor(m => m.SalaryFrom, "Salary")*@
+                <label for="SalaryFrom">Salary</label>
                 <div class="input-group">
                     <span class="input-group-addon">PLN</span>
-                    @Html.EditorFor(m => m.SalaryFrom, new { htmlAttributes = new { @class = "form-control", placeholder = "From" } })
+                    <input data-bind="value : salaryFrom" class="form-control text-box single-line" id="SalaryFrom" placeholder="From" name="SalaryFrom" type="text">
+                    @*@Html.EditorFor(m => m.SalaryFrom, new { htmlAttributes = new { @class = "form-control", placeholder = "From" } })*@
                     <span class="input-group-addon">.00</span>
                 </div>
                 @Html.ValidationMessageFor(m => m.SalaryFrom, "", new { @class = "text-danger" })
@@ -67,56 +68,62 @@
             <div class="form-group">
                 <button type="button" class="btn btn-primary">Create</button>
             </div>
-        }
+        </form>
     </div>
 </div>
 
-<div class="row page-box" id="Offer preview">
-    <h2><strong>Preview:</strong></h2>
-    <h2 data-bind="text : jobTitle">Job title PLACEHOLDER</h2>
-    <div class="col-sm-8">
-        @* Left section *@
-        <div>
-            <p>Job description PLACEHOLDER</p>
-        </div>
+<div class="row panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><strong>Preview:</strong></h3>
     </div>
+    <div class="panel-body" style="padding-top: 0; padding-right: 0">
+        <h2 data-bind="text : jobTitle()||'Job title'">Job title PLACEHOLDER</h2>
+        <div class="col-sm-8">
+            @* Left section *@
+            <div>
+                <p>Job description PLACEHOLDER</p>
+            </div>
+        </div>
 
-    <div class="col-sm-4">
-        @* Right section *@
-        <div class="offer-details">
-            <div>
-                <label>Company:</label>
-                <span>PLACEHOLDER</span>
-            </div>
-            <div data-bind="visible: showLocation">
-                <label>Location:</label>
-                <span data-bind="text : location">PLACEHOLDER</span>
-            </div>
-            <div>
-                <label>Salary from:</label>
-                <span>PLACEHOLDER (PLN)</span>
-            </div>
-            <div>
-                <label>Salary to:</label>
-                <span>PLACEHOLDER (PLN)</span>
-            </div>
-            <div>
-                <label>Created:</label>
-                <span>PLACEHOLDER</span>
-            </div>
-            <div>
-                <label>Valid:</label>
-                @*<span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>*@
-                <span>PLACEHOLDER</span>
-            </div>
+        <div class="col-sm-4">
+            @* Right section *@
+            <div class="offer-details">
+                <div>
+                    @* ToDo: Get list of companies *@
+                    <label>Company:</label>
+                    <span>PLACEHOLDER</span>
+                </div>
+                <div data-bind="visible: showLocation">
+                    <label>Location:</label>
+                    <span data-bind="text : location"></span>
+                </div>
+                <div data-bind="visible: salaryFrom">
+                    <label>Salary from:</label>
+                    <span data-bind="text : salaryFrom() + ' (PLN)'"></span>
+                </div>
+                <div>
+                    <label>Salary to:</label>
+                    <span>PLACEHOLDER (PLN)</span>
+                </div>
+                <div>
+                    <label>Created:</label>
+                    <span>PLACEHOLDER</span>
+                </div>
+                <div>
+                    <label>Valid:</label>
+                    @*<span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>*@
+                    <span>PLACEHOLDER</span>
+                </div>
 
-            <div>
-                <div style="padding-bottom: 5px">
-                    <a class="btn btn-primary">Apply</a>
+                <div>
+                    <div>
+                        <a class="btn btn-primary">Apply</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    
 </div>
 
 @section Scripts
@@ -138,8 +145,11 @@
             this.location = ko.observable();
             this.showLocation = ko.computed(function() {
                 return (this.location()) ? true : false;
-            },
-            this);
+            }, this);
+            this.salaryFrom = ko.observable();
+            this.showSalaryFrom = ko.computed(function () {
+                return (this.salaryFrom()) ? true : false;
+            }, this);
         }
 
         let model = new MyViewModel;
