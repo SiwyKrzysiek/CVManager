@@ -74,7 +74,7 @@
                 @*@Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
-                <button type="button" class="btn btn-primary">Create</button>
+                <button type="button" class="btn btn-primary" id="submitForm">Create</button>
             </div>
         </form>
     </div>
@@ -123,11 +123,8 @@
                     @*<span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>*@
                 </div>
 
-                <div>
-                    <div>
-                        <a class="btn btn-primary">Apply</a>
-                    </div>
-                </div>
+                <a class="btn btn-primary">Apply</a>
+
             </div>
         </div>
     </div>
@@ -238,13 +235,18 @@
             this.description = ko.observable();
         }
 
-        let model = new MyViewModel;
+        $(document).ready(function() {
+            let model = new MyViewModel;
 
-        ko.applyBindings(model);
+            ko.applyBindings(model);
 
-        $.getJSON("/api/companies").done(function(data) {
-            model.companies(data);
+            $.getJSON("/api/companies").done(function(data) {
+                model.companies(data);
+            });
+
+
         });
+        
 
         //console.log(myViewModel.jobTitle());
     </script>
