@@ -9,11 +9,13 @@
         <h2>New Job Offer</h2>
         @using (Html.BeginForm())
         {
-            @Html.AntiForgeryToken()
+            @*@Html.AntiForgeryToken()*@
             <div class="form-group">
-                @Html.LabelFor(m => m.JobTitle)
+                <label for="JobTitle">Job Title</label>
+                <input data-bind="value : jobTitle" class="form-control text-box single-line" id="JobTitle" name="JobTitle" type="text">
+                @*@Html.LabelFor(m => m.JobTitle)
                 @Html.EditorFor(m => m.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.Company)
@@ -23,9 +25,11 @@
                 @Html.ValidationMessageFor(m => m.CompanyId, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.Location)
+                <label for="Location">Location</label>
+                <input data-bind="value : location" class="form-control text-box single-line" id="Location" name="Location" type="text">
+                @*@Html.LabelFor(m => m.Location)
                 @Html.EditorFor(m => m.Location, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.SalaryFrom, "Salary")
@@ -67,3 +71,81 @@
     </div>
 </div>
 
+<div class="row page-box" id="Offer preview">
+    <h2><strong>Preview:</strong></h2>
+    <h2 data-bind="text : jobTitle">Job title PLACEHOLDER</h2>
+    <div class="col-sm-8">
+        @* Left section *@
+        <div>
+            <p>Job description PLACEHOLDER</p>
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        @* Right section *@
+        <div class="offer-details">
+            <div>
+                <label>Company:</label>
+                <span>PLACEHOLDER</span>
+            </div>
+            <div data-bind="visible: showLocation">
+                <label>Location:</label>
+                <span data-bind="text : location">PLACEHOLDER</span>
+            </div>
+            <div>
+                <label>Salary from:</label>
+                <span>PLACEHOLDER (PLN)</span>
+            </div>
+            <div>
+                <label>Salary to:</label>
+                <span>PLACEHOLDER (PLN)</span>
+            </div>
+            <div>
+                <label>Created:</label>
+                <span>PLACEHOLDER</span>
+            </div>
+            <div>
+                <label>Valid:</label>
+                @*<span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>*@
+                <span>PLACEHOLDER</span>
+            </div>
+
+            <div>
+                <div style="padding-bottom: 5px">
+                    <a class="btn btn-primary">Apply</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/knockout/knockout.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <script>
+        //let myViewModel = {
+        //    jobTitle: ko.observable(),
+        //    location: ko.observable(),
+        //    showLocation: ko.computed(function () {
+        //        return this.location();
+        //    }, this)
+        //};
+
+        function MyViewModel() {
+            this.jobTitle = ko.observable();
+            this.location = ko.observable();
+            this.showLocation = ko.computed(function() {
+                return (this.location()) ? true : false;
+            },
+            this);
+        }
+
+        let model = new MyViewModel;
+
+        ko.applyBindings(model);
+
+        //console.log(myViewModel.jobTitle());
+    </script>
+}
