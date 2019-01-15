@@ -170,13 +170,14 @@
 
             this.companies = ko.observableArray([]);
             this.companyId = ko.observable();
-            this.companyDisplay = ko.computed(function () {
-                let company = this.companies().find((c) => c.id==this.companyId());
-                if (company)
-                    return company.name;
-                else
-                    return "";
-            }, this);
+            this.companyDisplay = ko.computed(function() {
+                    let company = this.companies().find((c) => c.id == this.companyId());
+                    if (company)
+                        return company.name;
+                    else
+                        return "";
+                },
+                this);
 
             this.location = ko.observable();
             this.showLocation = ko.computed(function() {
@@ -235,10 +236,6 @@
             this.description = ko.observable();
         }
 
-        function submitForm() {
-            console.log("OK");
-        }
-
         $(document).ready(function() {
             let model = new MyViewModel;
 
@@ -248,10 +245,45 @@
                 model.companies(data);
             });
 
-            document.getElementById("submitFormButton").onclick = submitForm();
-        });
-        
+            document.getElementById("submitFormButton").onclick = function() {
+                console.log(model.companies());
 
-        //console.log(myViewModel.jobTitle());
+                let jobOfferDTO =
+                //{
+                //    "jobTitle": "Great jober",
+                //    "companyId": 2,
+                //    "salaryFrom": 5000,
+                //    "salaryTo": null,
+                //    "location": "Poland",
+                //    "description": "This is the very long description of my test job offer it has to be 50 char long",
+                //    "validUntil": "2019-03-02",
+                //}
+                {
+                    "jobTitle": model.jobTitle(),
+                    "companyId": model.companyId(),
+                    "salaryFrom": model.salaryFrom(),
+                    "salaryTo": model.salaryTo(),
+                    "location": model.location(),
+                    "description": model.description(),
+                    "validUntil": reverseDate(model.validUntil()),
+                };
+
+
+                $.ajax
+                ({
+                    type: "POST",
+                    url: '/api/offers',
+                    contentType: "application/json",
+                    dataType: 'json',
+                    async: true,
+                    data: JSON.stringify(jobOfferDTO),
+                    success: function() {
+                        window.location.href = "/JobOffer";
+                    }
+                });
+
+                console.log(JSON.stringify(jobOfferDTO));
+            };
+        });
     </script>
 }
