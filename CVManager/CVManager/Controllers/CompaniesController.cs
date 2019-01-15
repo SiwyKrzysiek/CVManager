@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CVManager.EntityFramework;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CVManager.Controllers
 {
@@ -24,9 +25,9 @@ namespace CVManager.Controllers
         /// </summary>
         /// <returns>List of companies</returns>
         [HttpGet]
-        public IActionResult GetCompanies()
+        public async Task<IActionResult> GetCompanies()
         {
-            var companies = _context.Companies.ToList();
+            var companies = await _context.Companies.ToListAsync();
 
             return Ok(companies);
         }
