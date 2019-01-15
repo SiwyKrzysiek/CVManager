@@ -7,30 +7,30 @@
 <div class="row page-box">
     <div class="col-sm-12">
         <h2>New Job Offer</h2>
-        <form>
+        <form id="createJobOfferForm">
             @*@Html.AntiForgeryToken()*@
             <div class="form-group">
                 <label for="JobTitle">Job Title</label>
-                <input data-bind="value : jobTitle, valueUpdate: 'afterkeydown'" class="form-control text-box single-line" id="JobTitle" name="JobTitle" type="text">
+                <input data-bind="value : jobTitle, valueUpdate: 'afterkeydown'" required class="form-control text-box single-line" id="JobTitle" name="JobTitle" type="text">
                 @*@Html.LabelFor(m => m.JobTitle)
-            @Html.EditorFor(m => m.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })*@
+                    @Html.EditorFor(m => m.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
                 <label for="Companies">Company</label>
                 <select data-bind="value: companyId, options: companies, optionsText: 'name', optionsValue: 'id'" class="form-control" id="Companies" name="Companies"></select>
                 @*@Html.LabelFor(m => m.Company)
-                @Html.DropDownListFor(m => m.CompanyId,
-                    Model.Companies.Select(c => new SelectListItem {Text =c.Name, Value = c.Id.ToString() }),
-                    new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CompanyId, "", new { @class = "text-danger" })*@
+                    @Html.DropDownListFor(m => m.CompanyId,
+                        Model.Companies.Select(c => new SelectListItem {Text =c.Name, Value = c.Id.ToString() }),
+                        new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.CompanyId, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
                 <label for="Location">Location</label>
                 <input data-bind="value : location, valueUpdate: 'afterkeydown'" class="form-control text-box single-line" id="Location" name="Location" type="text">
                 @*@Html.LabelFor(m => m.Location)
-            @Html.EditorFor(m => m.Location, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })*@
+                    @Html.EditorFor(m => m.Location, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })*@
             </div>
             <div class="form-group">
                 @*@Html.LabelFor(m => m.SalaryFrom, "Salary")*@
@@ -68,7 +68,7 @@
             </div>
             <div class="form-group description">
                 <label for="Description">Description</label>
-                <textarea data-bind="value: description, valueUpdate: 'afterkeydown'" class="form-control" data-val="true" data-val-minlength="Description must be at lest 50 characters" data-val-minlength-min="50" data-val-required="The Description field is required." id="Description" name="Description" placeholder="Enter description"></textarea>
+                <textarea data-bind="value: description, valueUpdate: 'afterkeydown'" required minlength="50" class="form-control" data-val="true" data-val-minlength="Description must be at lest 50 characters" data-val-minlength-min="50" data-val-required="The Description field is required." id="Description" name="Description" placeholder="Enter description"></textarea>
                 @*@Html.LabelFor(m => m.Description)*@
                 @*@Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Enter description" })*@
                 @*@Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })*@
@@ -97,7 +97,6 @@
             @* Right section *@
             <div class="offer-details">
                 <div>
-                    @* ToDo: Get list of companies *@
                     <label>Company:</label>
                     <span data-bind="text: companyDisplay"></span>
                 </div>
@@ -128,13 +127,15 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 
 @section Scripts
-{
+    {
     <script src="~/lib/knockout/knockout.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
 
     <script>
         function reverseDate(date) { //Changes date form YYYY-MM-DD to DD-MM-YYYY
@@ -170,119 +171,110 @@
 
             this.companies = ko.observableArray([]);
             this.companyId = ko.observable();
-            this.companyDisplay = ko.computed(function() {
-                    let company = this.companies().find((c) => c.id == this.companyId());
-                    if (company)
-                        return company.name;
-                    else
-                        return "";
-                },
+            this.companyDisplay = ko.computed(function () {
+                let company = this.companies().find((c) => c.id == this.companyId());
+                if (company)
+                    return company.name;
+                else
+                    return "";
+            },
                 this);
 
             this.location = ko.observable();
-            this.showLocation = ko.computed(function() {
-                    return (this.location()) ? true : false;
-                },
+            this.showLocation = ko.computed(function () {
+                return (this.location()) ? true : false;
+            },
                 this);
             this.salaryFrom = ko.observable();
 
-            this.showSalaryFrom = ko.computed(function() {
-                    return (this.salaryFrom()) ? true : false;
-                },
+            this.showSalaryFrom = ko.computed(function () {
+                return (this.salaryFrom()) ? true : false;
+            },
                 this);
 
             this.salaryTo = ko.observable();
-            this.showSalaryTo = ko.computed(function() {
-                    return (this.salaryTo()) ? true : false;
-                },
+            this.showSalaryTo = ko.computed(function () {
+                return (this.salaryTo()) ? true : false;
+            },
                 this);
 
-            this.created = ko.computed(function() {
-                    var today = new Date();
-                    var dd = today.getDate();
-                    var mm = today.getMonth() + 1; //January is 0!
-                    var yyyy = today.getFullYear();
+            this.created = ko.computed(function () {
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+                var yyyy = today.getFullYear();
 
-                    if (dd < 10) {
-                        dd = '0' + dd;
-                    }
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
 
-                    if (mm < 10) {
-                        mm = '0' + mm;
-                    }
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
 
-                    today = dd + '.' + mm + '.' + yyyy;
-                    return today;
-                },
+                today = dd + '.' + mm + '.' + yyyy;
+                return today;
+            },
                 this);
 
             this.validUntil = ko.observable();
-            this.validUntilDisplay = ko.computed(function() {
-                    let date = reverseDate(this.validUntil());
-                    let dateParts = date.split("-");
-                    let dateObject = new Date(dateParts[2], parseInt(dateParts[1]) - 1, dateParts[0]);
+            this.validUntilDisplay = ko.computed(function () {
+                let date = reverseDate(this.validUntil());
+                let dateParts = date.split("-");
+                let dateObject = new Date(dateParts[2], parseInt(dateParts[1]) - 1, dateParts[0]);
 
-                    let daysLeft = daysBetween(new Date(), dateObject) + 1;
+                let daysLeft = daysBetween(new Date(), dateObject) + 1;
 
-                    return `For ${daysLeft} days (untill ${dateParts.join(".")})`;
+                return `For ${daysLeft} days (untill ${dateParts.join(".")})`;
 
-                },
+            },
                 this);
-            this.showValidUntil = ko.computed(function() {
-                    return (this.validUntil() ? true : false);
-                },
+            this.showValidUntil = ko.computed(function () {
+                return (this.validUntil() ? true : false);
+            },
                 this);
 
             this.description = ko.observable();
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             let model = new MyViewModel;
 
             ko.applyBindings(model);
 
-            $.getJSON("/api/companies").done(function(data) {
+            $.getJSON("/api/companies").done(function (data) {
                 model.companies(data);
             });
 
-            document.getElementById("submitFormButton").onclick = function() {
-                console.log(model.companies());
+            let form = $("#createJobOfferForm");
+            form.validate();
 
-                let jobOfferDTO =
-                //{
-                //    "jobTitle": "Great jober",
-                //    "companyId": 2,
-                //    "salaryFrom": 5000,
-                //    "salaryTo": null,
-                //    "location": "Poland",
-                //    "description": "This is the very long description of my test job offer it has to be 50 char long",
-                //    "validUntil": "2019-03-02",
-                //}
-                {
-                    "jobTitle": model.jobTitle(),
-                    "companyId": model.companyId(),
-                    "salaryFrom": model.salaryFrom(),
-                    "salaryTo": model.salaryTo(),
-                    "location": model.location(),
-                    "description": model.description(),
-                    "validUntil": reverseDate(model.validUntil()),
-                };
+            document.getElementById("submitFormButton").onclick = function () {
+                if (form.valid()) {
+                    let jobOfferDTO =
+                    {
+                        "jobTitle": model.jobTitle(),
+                        "companyId": model.companyId(),
+                        "salaryFrom": model.salaryFrom(),
+                        "salaryTo": model.salaryTo(),
+                        "location": model.location(),
+                        "description": model.description(),
+                        "validUntil": reverseDate(model.validUntil()),
+                    };
 
-
-                $.ajax
-                ({
-                    type: "POST",
-                    url: '/api/offers',
-                    contentType: "application/json",
-                    dataType: 'json',
-                    async: true,
-                    data: JSON.stringify(jobOfferDTO),
-                    success: function() {
-                        window.location.href = "/JobOffer";
-                    }
-                });
-
-                console.log(JSON.stringify(jobOfferDTO));
+                    $.ajax
+                    ({
+                        type: "POST",
+                        url: '/api/offers',
+                        contentType: "application/json",
+                        dataType: 'json',
+                        async: true,
+                        data: JSON.stringify(jobOfferDTO),
+                        success: function () {
+                            window.location.href = "/JobOffer";
+                        }
+                    });
+                }
             };
         });
     </script>
