@@ -11,7 +11,7 @@
             @*@Html.AntiForgeryToken()*@
             <div class="form-group">
                 <label for="JobTitle">Job Title</label>
-                <input data-bind="value : jobTitle" class="form-control text-box single-line" id="JobTitle" name="JobTitle" type="text">
+                <input data-bind="value : jobTitle, valueUpdate: 'afterkeydown'" class="form-control text-box single-line" id="JobTitle" name="JobTitle" type="text">
                 @*@Html.LabelFor(m => m.JobTitle)
             @Html.EditorFor(m => m.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })*@
@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label for="Location">Location</label>
-                <input data-bind="value : location" class="form-control text-box single-line" id="Location" name="Location" type="text">
+                <input data-bind="value : location, valueUpdate: 'afterkeydown'" class="form-control text-box single-line" id="Location" name="Location" type="text">
                 @*@Html.LabelFor(m => m.Location)
             @Html.EditorFor(m => m.Location, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })*@
@@ -37,7 +37,7 @@
                 <label for="SalaryFrom">Salary</label>
                 <div class="input-group">
                     <span class="input-group-addon">PLN</span>
-                    <input data-bind="value : salaryFrom" class="form-control text-box single-line" id="SalaryFrom" placeholder="From" name="SalaryFrom" type="text">
+                    <input data-bind="value : salaryFrom, valueUpdate: 'afterkeydown'" class="form-control text-box single-line" id="SalaryFrom" placeholder="From" name="SalaryFrom" type="text">
                     @*@Html.EditorFor(m => m.SalaryFrom, new { htmlAttributes = new { @class = "form-control", placeholder = "From" } })*@
                     <span class="input-group-addon">.00</span>
                 </div>
@@ -48,7 +48,7 @@
                 <label for="SalaryTo">Salary</label>
                 <div class="input-group">
                     <span class="input-group-addon">PLN</span>
-                    <input data-bind="value : salaryTo" class="form-control text-box single-line" id="SalaryTo" placeholder="To" name="SalaryTo" type="text">
+                    <input data-bind="value : salaryTo, valueUpdate: 'afterkeydown'" class="form-control text-box single-line" id="SalaryTo" placeholder="To" name="SalaryTo" type="text">
                     @*@Html.EditorFor(m => m.SalaryTo, new { htmlAttributes = new { @class = "form-control", placeholder = "To" } })*@
                     <span class="input-group-addon">.00</span>
                 </div>
