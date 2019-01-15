@@ -171,7 +171,7 @@
         function MyViewModel() {
             this.jobTitle = ko.observable();
 
-            this.companies = ko.observableArray([new Company(1, 'France'), new Company(2, 'Germany'), new Company(3, 'Spain')]);
+            this.companies = ko.observableArray([]);
             this.companyId = ko.observable();
             this.companyDisplay = ko.computed(function () {
                 let company = this.companies().find((c) => c.id==this.companyId());
@@ -241,6 +241,10 @@
         let model = new MyViewModel;
 
         ko.applyBindings(model);
+
+        $.getJSON("/api/companies").done(function(data) {
+            model.companies(data);
+        });
 
         //console.log(myViewModel.jobTitle());
     </script>
