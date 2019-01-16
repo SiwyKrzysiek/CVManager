@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AADB2C.Controllers;
+//using AADB2C.Controllers;
 using CommunityCertForT.Models;
 using CVManager.Controllers;
 using Microsoft.AspNetCore.Authentication;
