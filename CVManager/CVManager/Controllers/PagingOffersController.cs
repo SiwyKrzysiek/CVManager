@@ -32,7 +32,7 @@ namespace CVManager.Controllers
         //[HttpGet]
         public IActionResult Get([FromRoute] int pageNumber = 1, [FromQuery(Name = "search")] string searchString = "")
         {
-            const int pageSize = 2;
+            const int pageSize = 3;
 
             var offers = LoadJobOffers();
             if (!string.IsNullOrEmpty(searchString))
