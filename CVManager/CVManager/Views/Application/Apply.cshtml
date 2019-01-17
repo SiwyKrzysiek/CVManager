@@ -43,11 +43,14 @@
                 @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
+                <label asp-for="Photo">Your photo</label>
+                <input type="file" asp-for="Photo">
+            </div>
+            <div class="form-group">
                 @Html.LabelFor(m => m.Description)
                 @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Enter description" })
-                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-area"})
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-area" })
             </div>
-
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Apply</button>
             </div>
