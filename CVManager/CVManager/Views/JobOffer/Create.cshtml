@@ -232,8 +232,10 @@
                         "salaryTo": model.salaryTo(),
                         "location": model.location(),
                         "description": model.description(),
-                        "validUntil": reverseDate(model.validUntil()),
+                        "validUntil": model.validUntil()
                     };
+
+                    console.log(jobOfferDTO);
 
                     $.ajax
                     ({
