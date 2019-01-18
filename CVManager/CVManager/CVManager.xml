@@ -4,6 +4,13 @@
         <name>CVManager</name>
     </assembly>
     <members>
+        <member name="M:CVManager.Controllers.ApplicationController.UploadFileToBlobStorage(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <summary>
+            Uploads file received from form to Azure blob storage
+            </summary>
+            <param name="file">File data</param>
+            <param name="fileName">Name that file should have in the storage</param>
+        </member>
         <member name="M:CVManager.Controllers.CompaniesController.GetCompanies">
             <summary>
             Get all companies that can post job offers

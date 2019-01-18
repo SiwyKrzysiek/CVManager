@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CVManager.EntityFramework;
 using CVManager.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace CVManager.Controllers
 {
@@ -58,6 +62,36 @@ namespace CVManager.Controllers
             return View(application);
         }
 
+        /// <summary>
+        /// Uploads file received from form to Azure blob storage
+        /// </summary>
+        /// <param name="file">File data</param>
+        /// <param name="fileName">Name that file should have in the storage</param>
+        private async Task UploadFileToBlobStorage(IFormFile file, string fileName)
+        {
+            string connectionString = @"DefaultEndpointsProtocol=https;AccountName=jobofferstoragekd;AccountKey=1ERNYEI2u/olisE50l9VWia25IVhlGYIFZgbi24Y/KqwIJd1jWnb2Nm5G8beA5R5PN5aV4+W4Y6i5OvtjUXjMg==;EndpointSuffix=core.windows.net";
+
+            if (CloudStorageAccount.TryParse(connectionString, out var storageAccount))
+            {
+                CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
+
+                // Get reference to the blob container by passing the name by reading the value from the configuration (appsettings.json)
+                CloudBlobContainer container = cloudBlobClient.GetContainerReference("applications");
+                //await container.CreateIfNotExistsAsync();
+
+                // Get the reference to the block blob from the container
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    file.OpenReadStream().CopyTo(memoryStream); //Convert to byte[]
+                    var bytes = memoryStream.ToArray();
+
+                    await blockBlob.UploadFromByteArrayAsync(bytes, 0, bytes.Length); //Upload
+                }
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Apply(JobApplicationCrateView model)
@@ -67,6 +101,17 @@ namespace CVManager.Controllers
                 return View(model);
             }
 
+            string photoGUID = null;
+            if (model.Photo != null) //User added his photo
+            {
+                photoGUID = Guid.NewGuid().ToString(); //Create unique photo name
+                var extension = Path.GetExtension(model.Photo.FileName);
+                var newName = photoGUID + extension;
+
+                await UploadFileToBlobStorage(model.Photo, newName);
+            }
+
+            //ToDo: store photo name in DB
             var newApplication = new JobApplication()
             {
                 OfferId = model.OfferId,
