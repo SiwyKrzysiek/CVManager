@@ -43,6 +43,11 @@
             </div>
         </div>
     }
-
-    @Html.ActionLink("Back to offer", "Details", "JobOffer", new { id = Model.OfferId }, new { @class = "btn btn-primary", style = "margin-top: 15px"})
+    @if (!string.IsNullOrWhiteSpace(Model.PhotoFileName))
+    {
+        <img class="row" id="photo" src='@Url.Action("GetPicture", "Application", new {name = Model.PhotoFileName})' alt="Photo of the user" />
+    }
+    <div class="row">
+        @Html.ActionLink("Back to offer", "Details", "JobOffer", new { id = Model.OfferId }, new { @class = "btn btn-primary", style = "margin-top: 15px; clear: both" })
+    </div>
 </div>

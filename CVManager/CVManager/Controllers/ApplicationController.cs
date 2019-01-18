@@ -111,11 +111,9 @@ namespace CVManager.Controllers
                 await UploadFileToBlobStorage(model.Photo, photoName);
             }
 
-            //ToDo: store photo name in DB
             var newApplication = new JobApplication()
             {
                 OfferId = model.OfferId,
-                
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 PhoneNumber = model.PhoneNumber,
@@ -131,6 +129,37 @@ namespace CVManager.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Details", "JobOffer", new {id = model.OfferId});
+        }
+
+        public async Task<ActionResult> GetPicture(string name)
+        {
+            var bytes = System.IO.File.ReadAllBytes(@"..\kot.png");
+
+            string connectionString = @"DefaultEndpointsProtocol=https;AccountName=jobofferstoragekd;AccountKey=1ERNYEI2u/olisE50l9VWia25IVhlGYIFZgbi24Y/KqwIJd1jWnb2Nm5G8beA5R5PN5aV4+W4Y6i5OvtjUXjMg==;EndpointSuffix=core.windows.net";
+
+            if (CloudStorageAccount.TryParse(connectionString, out var storageAccount))
+            {
+                CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
+
+                // Get reference to the blob container by passing the name by reading the value from the configuration (appsettings.json)
+                CloudBlobContainer container = cloudBlobClient.GetContainerReference("applications");
+                //await container.CreateIfNotExistsAsync();
+
+                // Get the reference to the block blob from the container
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(name);
+                if (!await blockBlob.ExistsAsync())
+                    return NotFound();
+
+                using (var stream = new MemoryStream())
+                {
+                    await blockBlob.DownloadToStreamAsync(stream);
+                    return File(stream.ToArray(), "image/png");
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }
