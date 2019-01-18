@@ -26,5 +26,6 @@ namespace CVManager.Models
         public DateTime? DateOfBirth { get; set; }
         public string Description { get; set; }
         public string PhotoFileName { get; set; }
+        //public int JobOfferId { get; set; } //Maybay adding this would fix the join problem
     }
 }
