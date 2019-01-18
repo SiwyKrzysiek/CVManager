@@ -10,6 +10,7 @@
             </summary>
             <param name="file">File data</param>
             <param name="fileName">Name that file should have in the storage</param>
+            <returns>URI to uploaded photo</returns>
         </member>
         <member name="M:CVManager.Controllers.CompaniesController.GetCompanies">
             <summary>

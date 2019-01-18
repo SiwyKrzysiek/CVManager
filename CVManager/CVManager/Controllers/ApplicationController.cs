@@ -67,7 +67,8 @@ namespace CVManager.Controllers
         /// </summary>
         /// <param name="file">File data</param>
         /// <param name="fileName">Name that file should have in the storage</param>
-        private async Task UploadFileToBlobStorage(IFormFile file, string fileName)
+        /// <returns>URI to uploaded photo</returns>
+        private static async Task<string> UploadFileToBlobStorage(IFormFile file, string fileName)
         {
             string connectionString = @"DefaultEndpointsProtocol=https;AccountName=jobofferstoragekd;AccountKey=1ERNYEI2u/olisE50l9VWia25IVhlGYIFZgbi24Y/KqwIJd1jWnb2Nm5G8beA5R5PN5aV4+W4Y6i5OvtjUXjMg==;EndpointSuffix=core.windows.net";
 
@@ -89,7 +90,11 @@ namespace CVManager.Controllers
 
                     await blockBlob.UploadFromByteArrayAsync(bytes, 0, bytes.Length); //Upload
                 }
+
+                return blockBlob.Uri.AbsoluteUri;
             }
+
+            return null;
         }
 
         [HttpPost]
@@ -101,14 +106,14 @@ namespace CVManager.Controllers
                 return View(model);
             }
 
-            string photoName = null;
+            string photoURI = null;
             if (model.Photo != null) //User added his photo
             {
                 var photoGUID = Guid.NewGuid().ToString(); //Create unique photo name
                 var extension = Path.GetExtension(model.Photo.FileName);
-                photoName = photoGUID + extension;
+                var photoName = photoGUID + extension;
 
-                await UploadFileToBlobStorage(model.Photo, photoName);
+                photoURI = await UploadFileToBlobStorage(model.Photo, photoName);
             }
 
             var newApplication = new JobApplication()
@@ -122,7 +127,7 @@ namespace CVManager.Controllers
                 CvUrl = model.CvUrl,
                 DateOfBirth = model.DateOfBirth,
                 Description = model.Description,
-                PhotoFileName = photoName
+                PhotoFileName = photoURI
             };
 
             _context.JobApplications.Add(newApplication);
@@ -133,8 +138,6 @@ namespace CVManager.Controllers
 
         public async Task<ActionResult> GetPicture(string name)
         {
-            var bytes = System.IO.File.ReadAllBytes(@"..\kot.png");
-
             string connectionString = @"DefaultEndpointsProtocol=https;AccountName=jobofferstoragekd;AccountKey=1ERNYEI2u/olisE50l9VWia25IVhlGYIFZgbi24Y/KqwIJd1jWnb2Nm5G8beA5R5PN5aV4+W4Y6i5OvtjUXjMg==;EndpointSuffix=core.windows.net";
 
             if (CloudStorageAccount.TryParse(connectionString, out var storageAccount))
@@ -150,10 +153,13 @@ namespace CVManager.Controllers
                 if (!await blockBlob.ExistsAsync())
                     return NotFound();
 
+                var url = blockBlob.StorageUri;
+                var url2 = blockBlob.Uri;
+
                 using (var stream = new MemoryStream())
                 {
                     await blockBlob.DownloadToStreamAsync(stream);
-                    return File(stream.ToArray(), "image/png");
+                    return File(stream.ToArray(), "image/png"); //Getting MIME type of file would be better
                 }
             }
             else
