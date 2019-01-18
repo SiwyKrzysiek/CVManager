@@ -101,20 +101,21 @@ namespace CVManager.Controllers
                 return View(model);
             }
 
-            string photoGUID = null;
+            string photoName = null;
             if (model.Photo != null) //User added his photo
             {
-                photoGUID = Guid.NewGuid().ToString(); //Create unique photo name
+                var photoGUID = Guid.NewGuid().ToString(); //Create unique photo name
                 var extension = Path.GetExtension(model.Photo.FileName);
-                var newName = photoGUID + extension;
+                photoName = photoGUID + extension;
 
-                await UploadFileToBlobStorage(model.Photo, newName);
+                await UploadFileToBlobStorage(model.Photo, photoName);
             }
 
             //ToDo: store photo name in DB
             var newApplication = new JobApplication()
             {
                 OfferId = model.OfferId,
+                
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 PhoneNumber = model.PhoneNumber,
@@ -122,7 +123,8 @@ namespace CVManager.Controllers
                 ContactAgreement = model.ContactAgreement,
                 CvUrl = model.CvUrl,
                 DateOfBirth = model.DateOfBirth,
-                Description = model.Description
+                Description = model.Description,
+                PhotoFileName = photoName
             };
 
             _context.JobApplications.Add(newApplication);
