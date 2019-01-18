@@ -25,5 +25,6 @@ namespace CVManager.Models
         [Display(Name = "Date of Birth")]
         public DateTime? DateOfBirth { get; set; }
         public string Description { get; set; }
+        public string PhotoFileName { get; set; }
     }
 }
