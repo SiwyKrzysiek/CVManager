@@ -62,13 +62,62 @@ namespace CVManager.Controllers
             return View(application);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Apply(JobApplicationCrateView model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string photoURI = null;
+            if (model.Photo != null) //User added his photo
+            {
+                var photoGUID = Guid.NewGuid().ToString(); //Create unique photo name
+                var extension = Path.GetExtension(model.Photo.FileName);
+                var photoName = photoGUID + extension;
+
+                photoURI = await UploadPhotoToBlobStorageAsync(model.Photo, photoName);
+            }
+
+            string CVURI = null;
+            if (model.CV != null) //User added CV
+            {
+                var CVGUID = Guid.NewGuid().ToString();
+                var extension = Path.GetExtension(model.CV.FileName);
+                var fileName = CVGUID + extension;
+
+                CVURI = await UploadCVToBlobStorageAsync(model.CV, fileName);
+            }
+
+            var newApplication = new JobApplication()
+            {
+                OfferId = model.OfferId,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber,
+                EmailAddress = model.EmailAddress,
+                ContactAgreement = model.ContactAgreement,
+                CvUrl = CVURI,
+                DateOfBirth = model.DateOfBirth,
+                Description = model.Description,
+                PhotoFileName = photoURI,
+            };
+
+            _context.JobApplications.Add(newApplication);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "JobOffer", new {id = model.OfferId});
+        }
+
         /// <summary>
         /// Uploads file received from form to Azure blob storage
         /// </summary>
         /// <param name="file">File data</param>
         /// <param name="fileName">Name that file should have in the storage</param>
-        /// <returns>URI to uploaded photo</returns>
-        private static async Task<string> UploadFileToBlobStorage(IFormFile file, string fileName)
+        /// <returns>URI to uploaded file</returns>
+        private static async Task<string> UploadFileToBlobStorageAsync(IFormFile file, string fileName, string containerName)
         {
             string connectionString = @"DefaultEndpointsProtocol=https;AccountName=jobofferstoragekd;AccountKey=1ERNYEI2u/olisE50l9VWia25IVhlGYIFZgbi24Y/KqwIJd1jWnb2Nm5G8beA5R5PN5aV4+W4Y6i5OvtjUXjMg==;EndpointSuffix=core.windows.net";
 
@@ -77,7 +126,7 @@ namespace CVManager.Controllers
                 CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
 
                 // Get reference to the blob container by passing the name by reading the value from the configuration (appsettings.json)
-                CloudBlobContainer container = cloudBlobClient.GetContainerReference("applications");
+                CloudBlobContainer container = cloudBlobClient.GetContainerReference(containerName);
                 //await container.CreateIfNotExistsAsync();
 
                 // Get the reference to the block blob from the container
@@ -97,46 +146,29 @@ namespace CVManager.Controllers
             return null;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Apply(JobApplicationCrateView model)
+        /// <summary>
+        /// Uploads CV to blob storage
+        /// </summary>
+        /// <param name="modelCv">File received from form</param>
+        /// <param name="fileName">Name that file should have on blob storage</param>
+        /// <returns>URL to uploaded CV</returns>
+        private static async Task<string> UploadCVToBlobStorageAsync(IFormFile modelCv, string fileName)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            string photoURI = null;
-            if (model.Photo != null) //User added his photo
-            {
-                var photoGUID = Guid.NewGuid().ToString(); //Create unique photo name
-                var extension = Path.GetExtension(model.Photo.FileName);
-                var photoName = photoGUID + extension;
-
-                photoURI = await UploadFileToBlobStorage(model.Photo, photoName);
-            }
-
-            var newApplication = new JobApplication()
-            {
-                OfferId = model.OfferId,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                PhoneNumber = model.PhoneNumber,
-                EmailAddress = model.EmailAddress,
-                ContactAgreement = model.ContactAgreement,
-                CvUrl = model.CvUrl,
-                DateOfBirth = model.DateOfBirth,
-                Description = model.Description,
-                PhotoFileName = photoURI
-            };
-
-            _context.JobApplications.Add(newApplication);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Details", "JobOffer", new {id = model.OfferId});
+            return await UploadFileToBlobStorageAsync(modelCv, fileName, "cvstorage");
         }
 
-        public async Task<ActionResult> GetPicture(string name)
+        /// <summary>
+        /// Uploads file received from form to Azure blob storage
+        /// </summary>
+        /// <param name="file">File data</param>
+        /// <param name="fileName">Name that file should have in the storage</param>
+        /// <returns>URI to uploaded photo</returns>
+        private static async Task<string> UploadPhotoToBlobStorageAsync(IFormFile file, string fileName)
+        {
+            return await UploadFileToBlobStorageAsync(file, fileName, "applications");   
+        }
+
+        private async Task<ActionResult> GetPicture(string name)
         {
             string connectionString = @"DefaultEndpointsProtocol=https;AccountName=jobofferstoragekd;AccountKey=1ERNYEI2u/olisE50l9VWia25IVhlGYIFZgbi24Y/KqwIJd1jWnb2Nm5G8beA5R5PN5aV4+W4Y6i5OvtjUXjMg==;EndpointSuffix=core.windows.net";
 

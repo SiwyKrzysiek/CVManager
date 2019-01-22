@@ -12,5 +12,7 @@ namespace CVManager.Models
         public string JobTitle { get; set; }
         [BindProperty]
         public IFormFile Photo { get; set; }
+        [BindProperty]
+        public IFormFile CV { get; set; }
     }
 }
