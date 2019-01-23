@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -18,24 +19,23 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
-            StartIIS();
+            //StartIIS();
 
 
             var projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.Parent.FullName;
             var driverFolder = Path.Combine(projectDirectory, @"chromedriver_win32");
 
-            Debug.WriteLine(projectDirectory);
             _driver = new ChromeDriver(driverFolder); //Open bew browser
         }
 
         [TearDown]
         public void TestCleanup()
         {
-            // Ensure IISExpress is stopped
-            if (_iisProcess.HasExited == false)
-            {
-                _iisProcess.Kill();
-            }
+            //// Ensure IISExpress is stopped
+            //if (_iisProcess.HasExited == false)
+            //{
+            //    _iisProcess.Kill();
+            //}
         }
 
         private void StartIIS()
@@ -65,14 +65,27 @@ namespace Tests
         }
 
         [Test]
-        public void Test1()
+        public void TryToNavigateToJobOffers()
         {
             //_driver.Navigate().GoToUrl("http://www.google.com"); //navigate to page
             //var query = _driver.FindElement(By.Name("q"));
             //query.SendKeys("Hello Selenium!");
             //query.Submit();
 
-            _driver.Navigate().GoToUrl(GetAbsoluteUrl(@"/index"));
+            //_driver.Navigate().GoToUrl(GetAbsoluteUrl(@"/index"));
+
+            _driver.Navigate().GoToUrl(@"https://cvmanagerkrzysztofdabrowski.azurewebsites.net"); //Go to index
+
+            var jobOffersButton = _driver.FindElement(By.LinkText("Job offers"));
+            Assert.IsNotNull(jobOffersButton);
+
+            jobOffersButton.Click();
+
+
+            var headers2 = _driver.FindElements(By.TagName("h2"));
+
+            //On offers page there shoul be such header
+            Assert.IsTrue(headers2.Any(h => h.Text == "Job Offer list"));
 
             _driver.Close();
 
