@@ -1,3 +1,6 @@
+using System;
+using System.Diagnostics;
+using System.IO;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -11,7 +14,11 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
-            _driver = new ChromeDriver(@"D:\Studia\ASP.NETCore_MiNI2018\CVManager\chromedriver_win32"); //Open bew browser
+            var projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.Parent.FullName;
+            var driverFolder = projectDirectory + @"\chromedriver_win32";
+
+            Debug.WriteLine(projectDirectory);
+            _driver = new ChromeDriver(driverFolder); //Open bew browser
         }
 
         [Test]
