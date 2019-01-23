@@ -4,7 +4,23 @@
         <name>CVManager</name>
     </assembly>
     <members>
-        <member name="M:CVManager.Controllers.ApplicationController.UploadFileToBlobStorage(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+        <member name="M:CVManager.Controllers.ApplicationController.UploadFileToBlobStorageAsync(Microsoft.AspNetCore.Http.IFormFile,System.String,System.String)">
+            <summary>
+            Uploads file received from form to Azure blob storage
+            </summary>
+            <param name="file">File data</param>
+            <param name="fileName">Name that file should have in the storage</param>
+            <returns>URI to uploaded file</returns>
+        </member>
+        <member name="M:CVManager.Controllers.ApplicationController.UploadCVToBlobStorageAsync(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <summary>
+            Uploads CV to blob storage
+            </summary>
+            <param name="modelCv">File received from form</param>
+            <param name="fileName">Name that file should have on blob storage</param>
+            <returns>URL to uploaded CV</returns>
+        </member>
+        <member name="M:CVManager.Controllers.ApplicationController.UploadPhotoToBlobStorageAsync(Microsoft.AspNetCore.Http.IFormFile,System.String)">
             <summary>
             Uploads file received from form to Azure blob storage
             </summary>
