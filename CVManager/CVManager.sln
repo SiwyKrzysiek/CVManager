@@ -6,6 +6,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CVManager", "CVManager\CVMa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CVManager.UITests", "CVManager.UITests\CVManager.UITests.csproj", "{5FBB7CBA-30C0-46A9-9CC4-3AF3A322D8E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CVManager.UnitTests", "CVManager.UnitTests\CVManager.UnitTests.csproj", "{F26F74BE-1677-4E77-B33D-F2C392DC07F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{5FBB7CBA-30C0-46A9-9CC4-3AF3A322D8E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FBB7CBA-30C0-46A9-9CC4-3AF3A322D8E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FBB7CBA-30C0-46A9-9CC4-3AF3A322D8E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F26F74BE-1677-4E77-B33D-F2C392DC07F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F26F74BE-1677-4E77-B33D-F2C392DC07F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F26F74BE-1677-4E77-B33D-F2C392DC07F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F26F74BE-1677-4E77-B33D-F2C392DC07F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
