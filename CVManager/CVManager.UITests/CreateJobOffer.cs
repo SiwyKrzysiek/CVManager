@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 
 namespace CVManager.UITests
 {
@@ -23,7 +25,7 @@ namespace CVManager.UITests
         }
 
         [Test]
-        public void TryToSubmitNewJobOffer()
+        public void TryToSubmitNewJobOfferWithCorrectData()
         {
             //_driver.Navigate().GoToUrl("http://www.google.com"); //navigate to page
             //var query = _driver.FindElement(By.Name("q"));
@@ -47,7 +49,15 @@ namespace CVManager.UITests
             _driver.FindElement(By.Id("SalaryTo")).SendKeys("6500");
             _driver.FindElement(By.Id("Description")).SendKeys("LED Solar System to młoda i dynamicznie rozwijająca się firma działająca w obszarze nowoczesnych technologii:  oświetlenia LED, lamp LED, laserów półprzewodnikowych, DAC audio, systemów fotowoltaicznych. Wraz z rozwojem firmy  poszerzamy kanały sprzedaży oraz przygotowujemy się do wdrożenia innowacyjnych produktów. Prowadzimy badania\r\ni jesteśmy na etapie prototypownia innowacyjnych lamp LED dla przemysłu oraz lamp LED do wzrostu roślin. Aktualnie jesteśmy na etapie automatyzacji procesów sprzedażowych\r\ni wdrażania produktów do sklepu internetowego. ");
 
-            //_driver.Close();
+            _driver.FindElement(By.Id("submitFormButton")).Click(); //Submit form and wait for redirection
+
+            WebDriverWait wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 0, 20));
+            wait.Until(d => d.Url == "https://cvmanagerkrzysztofdabrowski.azurewebsites.net/JobOffer");
+
+            Assert.AreEqual(@"https://cvmanagerkrzysztofdabrowski.azurewebsites.net/JobOffer", _driver.Url);
+
+
+            _driver.Close();
 
             Assert.Pass();
         }
