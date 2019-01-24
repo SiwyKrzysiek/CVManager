@@ -13,18 +13,6 @@ namespace CVManager.Controllers
 {
     public class JobOfferController : Controller
     {
-        private List<JobOffer> LoadJobOffers()
-        {
-            var jobOffers = _context.JobOffers.ToList();
-            var companies = _context.Companies.ToList();
-            foreach (var offer in jobOffers)
-            {
-                offer.Company = companies.FirstOrDefault(c => c.Id == offer.CompanyId);
-            }
-
-            return jobOffers;
-        }
-
         private readonly DataContext _context;
 
         public JobOfferController(DataContext context)
@@ -43,9 +31,6 @@ namespace CVManager.Controllers
             var offer = await _context.JobOffers.Include(x => x.Company).Include(o => o.JobApplications).FirstOrDefaultAsync(o => o.Id == id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-           
-            //var applications = _context.JobApplications.ToList().FindAll(a => a.OfferId == offer.Id);
-            //offer.JobApplications = applications;
 
             return View(offer);
         }
@@ -55,7 +40,7 @@ namespace CVManager.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var offer = LoadJobOffers().FirstOrDefault(o => o.Id == id);
+            var offer = _context.JobOffers.FirstOrDefault(o => o.Id == id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
@@ -69,7 +54,7 @@ namespace CVManager.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var offer = LoadJobOffers().FirstOrDefault(o => o.Id == model.Id);
+            var offer = await _context.JobOffers.FirstOrDefaultAsync(o => o.Id == model.Id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
@@ -87,7 +72,7 @@ namespace CVManager.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var offerToRemove = LoadJobOffers().FirstOrDefault(o => o.Id == id);
+            var offerToRemove = _context.JobOffers.FirstOrDefault(o => o.Id == id);
             if (offerToRemove == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 

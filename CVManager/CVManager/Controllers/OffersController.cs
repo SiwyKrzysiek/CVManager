@@ -21,22 +21,6 @@ namespace CVManager.Controllers
             this._context = context;
         }
 
-        private List<JobOffer> LoadJobOffers()
-        {
-            var jobOffers = _context.JobOffers.ToList();
-            var companies = _context.Companies.ToList();
-            var applications = _context.JobApplications.ToList();
-
-            foreach (var offer in jobOffers)
-            {
-                offer.Company = companies.FirstOrDefault(c => c.Id == offer.CompanyId);
-                offer.JobApplications = applications.FindAll(a => a.OfferId == offer.Id);
-            }
-
-            return jobOffers;
-        }
-
-
         /// <summary>
         /// Get all job offers that have selected text inside.
         /// If searchString is empty then it returns all offers.
@@ -46,7 +30,7 @@ namespace CVManager.Controllers
         [HttpGet]
         public IActionResult Offers([FromQuery(Name = "search")] string searchString = "")
         {
-            var offers = LoadJobOffers();
+            var offers = _context.JobOffers.Include(o => o.Company).Include(o => o.JobApplications).ToList();
             if (!string.IsNullOrEmpty(searchString))
                 offers = offers.Where(o => o.JobTitle.Contains(searchString)).ToList();
 
