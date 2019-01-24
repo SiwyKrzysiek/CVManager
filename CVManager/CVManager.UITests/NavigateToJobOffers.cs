@@ -84,7 +84,7 @@ namespace Tests
 
             var headers2 = _driver.FindElements(By.TagName("h2"));
 
-            //On offers page there shoul be such header
+            //On offers page there should be such header
             Assert.IsTrue(headers2.Any(h => h.Text == "Job Offer list"));
 
             _driver.Close();
