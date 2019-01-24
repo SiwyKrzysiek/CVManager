@@ -40,12 +40,12 @@ namespace CVManager.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var offer = await _context.JobOffers.Include(x => x.Company).FirstOrDefaultAsync(o => o.Id == id);
+            var offer = await _context.JobOffers.Include(x => x.Company).Include(o => o.JobApplications).FirstOrDefaultAsync(o => o.Id == id);
             if (offer == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
            
-            var applications = _context.JobApplications.ToList().FindAll(a => a.OfferId == offer.Id);
-            offer.JobApplications = applications;
+            //var applications = _context.JobApplications.ToList().FindAll(a => a.OfferId == offer.Id);
+            //offer.JobApplications = applications;
 
             return View(offer);
         }

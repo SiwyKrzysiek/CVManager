@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CVManager.Models
 {
     public class JobApplication
     {
         public int Id { get; set; }
+        [ForeignKey("JobOffer")]
         public int OfferId { get; set; }
+        public JobOffer JobOffer { get; set; }
         [Display(Name = "First Name")]
         [Required]
         public string FirstName { get; set; }
