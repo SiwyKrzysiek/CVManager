@@ -27,11 +27,6 @@ namespace CVManager.UITests
         [Test]
         public void TryToSubmitNewJobOfferWithCorrectData()
         {
-            //_driver.Navigate().GoToUrl("http://www.google.com"); //navigate to page
-            //var query = _driver.FindElement(By.Name("q"));
-            //query.SendKeys("Hello Selenium!");
-            //query.Submit();
-
             _driver.Navigate().GoToUrl(@"https://cvmanagerkrzysztofdabrowski.azurewebsites.net/JobOffer"); //Go to index
 
             var createButton = _driver.FindElement(By.LinkText("Create job offer"));
@@ -56,10 +51,46 @@ namespace CVManager.UITests
 
             Assert.AreEqual(@"https://cvmanagerkrzysztofdabrowski.azurewebsites.net/JobOffer", _driver.Url);
 
+            Assert.Pass();
+        }
 
-            _driver.Close();
+        [Test]
+        public void TryToSubmitNewJobOfferWithoutDescription()
+        {
+            _driver.Navigate().GoToUrl(@"https://cvmanagerkrzysztofdabrowski.azurewebsites.net/JobOffer"); //Go to index
+
+            var createButton = _driver.FindElement(By.LinkText("Create job offer"));
+            Assert.IsNotNull(createButton);
+
+            createButton.Click();
+
+            var headers2 = _driver.FindElements(By.TagName("h2"));
+
+            //On creation form there should be such header
+            Assert.IsTrue(headers2.Any(h => h.Text == "New Job Offer"));
+
+            _driver.FindElement(By.Id("JobTitle")).SendKeys("Software tester");
+            _driver.FindElement(By.Id("SalaryFrom")).SendKeys("4000");
+            _driver.FindElement(By.Id("SalaryTo")).SendKeys("6500");
+
+            _driver.FindElement(By.Id("submitFormButton")).Click(); //Submit form and wait for redirection
+
+            WebDriverWait wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 0, 1));
+
+            Assert.Throws<WebDriverTimeoutException>(delegate
+            {
+                wait.Until(d => d.Url == "https://cvmanagerkrzysztofdabrowski.azurewebsites.net/JobOffer");
+            } );
+
+            Assert.AreNotEqual(@"https://cvmanagerkrzysztofdabrowski.azurewebsites.net/JobOffer", _driver.Url);
 
             Assert.Pass();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _driver.Quit();
         }
     }
 }
