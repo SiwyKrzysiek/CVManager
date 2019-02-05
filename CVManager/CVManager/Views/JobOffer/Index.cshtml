@@ -2,6 +2,11 @@
     ViewData["Title"] = "Job Offers";
 }
 
+@section Head
+{
+    <link rel="stylesheet" href="~/css/loader.css" />
+}
+
 <div class="row page-box">
     <div class="col-sm-12">
         <h2>Job Offer list</h2>
@@ -55,6 +60,10 @@
         });
 
         function loadPage(pageNumber) {
+            let table = document.getElementById("table");
+            table.appendChild(createLoader());
+
+
             $.getJSON(`${url}/${pageNumber}?search=${currentSearch}`).done(function(data) {
                 let offers = data.jobOffers;
                 let pagesCount = data.pagesCount;
@@ -62,6 +71,18 @@
                 renderOffers(offers);
                 renderPaging(pagesCount, pageNumber);
             });
+        }
+
+        function createLoader() {
+            let loader = document.createElement("div");
+            loader.id = "preloader";
+
+            let innerLoader = document.createElement("div");
+            innerLoader.id = "loader";
+
+            loader.appendChild(innerLoader);
+
+            return loader;
         }
 
         function renderPaging(pagesCount, currentPage) {
@@ -86,7 +107,7 @@
         }
 
         function renderOffers(offers) {
-            var table = document.getElementById("table");
+            let table = document.getElementById("table");
             clearChildren(table);
 
             for (let offer of offers) {
