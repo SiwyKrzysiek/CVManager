@@ -210,14 +210,44 @@
             this.description = ko.observable();
         }
 
+        function loadCompaniesList() {
+
+            return new Promise((resolve, reject) => {
+                let url = "/api/companies";
+
+                var request = new XMLHttpRequest();
+                request.open("GET", url);
+                request.responseType = "json";
+
+                request.onload = function() {
+                    if (request.status == 200)
+                        resolve(request.response);
+                    else
+                        reject(Error(request.status));
+                };
+                request.onerror = function() {
+                    reject(Error("Network error"));
+                };
+
+                request.send();
+            });
+        }
+
         $(document).ready(function () {
             let model = new MyViewModel;
 
             ko.applyBindings(model);
 
-            $.getJSON("/api/companies").done(function (data) {
-                model.companies(data);
-            });
+            //$.getJSON("/api/companies").done(function (data) {
+            //    model.companies(data);
+            //});
+
+            loadCompaniesList().then(
+                (result) => model.companies(result),
+                function(error) {
+                    //ToDo: Display error page
+                }
+            );
 
             let form = $("#createJobOfferForm");
             form.validate();
