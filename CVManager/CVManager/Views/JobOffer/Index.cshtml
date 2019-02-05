@@ -61,8 +61,8 @@
 
         function loadPage(pageNumber) {
             let table = document.getElementById("table");
+            clearChildren(table);
             table.appendChild(createLoader());
-
 
             $.getJSON(`${url}/${pageNumber}?search=${currentSearch}`).done(function(data) {
                 let offers = data.jobOffers;
