@@ -125,8 +125,8 @@
             link.appendChild(document.createTextNode(offer.jobTitle));
 
             tr.appendChild(document.createElement("td")).appendChild(link);
-            tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(offer.company.name));
-            tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(offer.location));
+            tr.appendChild(document.createElement("td")).appendChild(document.createTextNode( (offer.company.name) ? offer.company.name : "" ));
+            tr.appendChild(document.createElement("td")).appendChild(document.createTextNode( (offer.location) ? offer.location : "" ));
             tr.appendChild(document.createElement("td"))
                 .appendChild(document.createTextNode(offer.created.substr(0, 10)));
 
